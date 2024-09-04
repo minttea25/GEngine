@@ -39,6 +39,7 @@
 #include "Vector3.h"
 #include "Vector2Int.h"
 #include "Vector4.h"
+#include "Rect.h"
 
 /*********** Core ****************/
 #include "GTime.h"

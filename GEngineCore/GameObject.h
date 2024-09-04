@@ -2,6 +2,8 @@
 
 NAMESPACE_OPEN(GEngine)
 
+#include "CoreHeader.h"
+
 class Component;
 class Transform;
 

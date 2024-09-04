@@ -170,6 +170,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="concepts.h" />
+    <ClInclude Include="CoreHeader.h" />
     <ClInclude Include="CoreMacro.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameObject.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene2D.h" />
     <ClInclude Include="SceneManager.h" />

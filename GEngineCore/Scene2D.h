@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CoreHeader.h"
 
 NAMESPACE_OPEN(GEngine)
 

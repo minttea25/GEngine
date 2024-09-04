@@ -1,7 +1,6 @@
 #pragma once
 
-#include "CoreMacro.h"
-#include "Types.h"
+#include "CoreHeader.h"
 
 NAMESPACE_OPEN(GEngine)
 

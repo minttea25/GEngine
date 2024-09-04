@@ -52,21 +52,6 @@ void Input::Update()
 	}
 }
 
-//bool Input::GetKeyDown(KeyCode key)
-//{
-//	return s_keys[(uint32_t)key].state == KeyState::Down;
-//}
-//
-//bool Input::GetKeyUp(KeyCode key)
-//{
-//	return s_keys[(uint32_t)key].state == KeyState::Up;
-//}
-//
-//bool Input::GetKey(KeyCode key)
-//{
-//	return s_keys[(uint32_t)key].state == KeyState::Pressed;
-//}
-
 bool Input::isKeyDown(KeyCode key)
 {
 	return GetAsyncKeyState(ASCII[(int)key]) & 0x8000;
