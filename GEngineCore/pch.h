@@ -42,6 +42,7 @@
 
 /*********** Core ****************/
 #include "GTime.h"
+#include "Input.h"
 #include "Object.h"
 #include "GameObject.h"
 #include "Layer.h"

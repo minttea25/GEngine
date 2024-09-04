@@ -1,4 +1,10 @@
 #pragma once
+
+#include "CoreMacro.h"
+#include "concepts.h"
+#include "Types.h"
+#include "Scene.h"
+
 NAMESPACE_OPEN(GEngine)
 
 class SceneManager
@@ -8,7 +14,7 @@ public:
 	G_ENGINE_CORE_API static void Clear();
 
 	template<Scene_t Sc>
-	G_ENGINE_CORE_API static uint16_t CreateScene(const String& name);
+	static uint16_t CreateScene(const String& name);
 
 	G_ENGINE_CORE_API static void LoadScene(const String& name);
 	G_ENGINE_CORE_API static void LoadScene(const uint16_t sceneIndex);

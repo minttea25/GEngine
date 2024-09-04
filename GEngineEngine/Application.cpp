@@ -2,6 +2,8 @@
 #include "Application.h"
 
 #include "GTime.h"
+#include "Input.h"
+#include "SceneManager.h"
 
 NAMESPACE_OPEN(GEngine);
 
@@ -41,8 +43,8 @@ void Application::Init(HWND hwnd, unsigned int width, unsigned int height)
     HBITMAP oldBitmap = (HBITMAP)SelectObject(_backHdc, _backBuffer);
     DeleteObject(oldBitmap);
     Time::Init();
-    //Input::Init();
-    //SceneManager::Init();
+    Input::Init();
+    SceneManager::Init();
 }
 
 void Application::Run()
@@ -58,9 +60,15 @@ void Application::Update()
     Time::Update();
 
     // Input
-    //Input::Update();
+    Input::Update();
 
-    //SceneManager::Update();
+    SceneManager::Update();
+
+    // TEST
+    if (Input::GetKeyDown(KeyCode::A))
+    {
+        int a = 1; // check break point when the 'A' is pushed on keyboard.
+    }
 }
 
 void Application::FixedUpdate()
