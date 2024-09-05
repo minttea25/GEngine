@@ -4,6 +4,7 @@
 #include "framework.h"
 #include "Game.h"
 #include "Application.h"
+#include "TestCodes.h"
 
 #define MAX_LOADSTRING 100
 
@@ -131,6 +132,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
+
+   // Add codes here...
+   LoadScene();
+
 
    return TRUE;
 }

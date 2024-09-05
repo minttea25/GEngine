@@ -48,15 +48,15 @@
 #include "GameObject.h"
 #include "Layer.h"
 
-#include "Component.h"
-#include "Transform.h"
+//#include "Component.h"
+//#include "Transform.h"
+//
+//#include "Scene.h"
+//#include "Scene2D.h"
+//#include "SceneManager.h"
 
-#include "Scene.h"
-#include "Scene2D.h"
-#include "SceneManager.h"
 
-
-#include "Collector.h"
+//#include "Collector.h"
 
 
 #endif //PCH_H

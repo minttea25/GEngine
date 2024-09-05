@@ -26,7 +26,10 @@ void Application::Init(HWND hwnd, unsigned int width, unsigned int height)
     _height = height;
     _width = width;
 
+#pragma warning(push)
+#pragma warning(disable: 4838)
     RECT rect = { 0, 0, _width, _height };
+#pragma warning(pop)
     AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
     SetWindowPos(_hwnd, NULL,   
         0, 0,
@@ -42,6 +45,7 @@ void Application::Init(HWND hwnd, unsigned int width, unsigned int height)
     // Exchange old to new
     HBITMAP oldBitmap = (HBITMAP)SelectObject(_backHdc, _backBuffer);
     DeleteObject(oldBitmap);
+
     Time::Init();
     Input::Init();
     SceneManager::Init();
@@ -62,29 +66,25 @@ void Application::Update()
     // Input
     Input::Update();
 
+    // Scene
     SceneManager::Update();
-
-    // TEST
-    if (Input::GetKeyDown(KeyCode::A))
-    {
-        int a = 1; // check break point when the 'A' is pushed on keyboard.
-    }
 }
 
 void Application::FixedUpdate()
 {
+    // TODO
 }
 
 void Application::LateUpdate()
 {
-    //SceneManager::LateUpdate();
+    SceneManager::LateUpdate();
 }
 
 void Application::Render()
 {
     clearRenterTarget();
 
-    //SceneManager::Render(_backHdc);
+    SceneManager::Render(_backHdc);
 
     ShowFps();
 
@@ -99,7 +99,10 @@ void Application::ShowFps()
     swprintf_s(str, 50, L"FPS: %d", (int)fps);
 
     auto len = wcsnlen_s(str, 50);
+#pragma warning(push)
+#pragma warning(disable: 4267)
     TextOut(_backHdc, 0, 0, str, len);
+#pragma warning(pop)
 }
 
 void Application::clearRenterTarget()

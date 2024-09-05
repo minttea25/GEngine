@@ -73,6 +73,12 @@
     <ClInclude Include="Rect.h">
       <Filter>Types</Filter>
     </ClInclude>
+    <ClInclude Include="Behaviour.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MonoBehaviour.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -119,6 +125,12 @@
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Behaviour.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MonoBehaviour.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

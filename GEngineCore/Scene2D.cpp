@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Scene2D.h"
+#include "Collector.h"
 
 NAMESPACE_OPEN(GEngine)
 

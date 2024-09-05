@@ -1,13 +1,16 @@
 #include "pch.h"
+#include "Component.h"
 #include "GameObject.h"
+#include "Transform.h"
+#include "Collector.h"
 
 NAMESPACE_OPEN(GEngine)
 
-std::atomic<GameObject::ID> GameObject::s_oid = 0;
+GameObject::ID GameObject::s_oid = 0;
 
 GameObject::GameObject()
 	:_transform(GNEW(Transform)),
-	_oid(s_oid.fetch_add(1))
+	_oid(++s_oid), _layerIndex(0)
 {
 }
 

@@ -21,13 +21,13 @@ public:
 	bool Equals(Object other) const;
 
 	template<Object_t Obj>
-	G_ENGINE_CORE_API static Obj* Instantiate(const Obj* original, const Types::Vector3& position, Transform& parent, const int layerIndex = 0);
+	static Obj* Instantiate(const Obj* original, const Types::Vector3& position, Transform& parent, const int layerIndex = 0);
 	template<Object_t Obj>
-	G_ENGINE_CORE_API static Obj* Instantiate(const Obj* original);
+	static Obj* Instantiate(const Obj* original);
 	template<Object_t Obj>
-	G_ENGINE_CORE_API static Obj* Instantiate(const Obj* original, Transform& parent);
+	static Obj* Instantiate(const Obj* original, Transform& parent);
 	template<Object_t Obj>
-	G_ENGINE_CORE_API static Obj* Instantiate(const Obj* original, const Types::Vector3& position);
+	static Obj* Instantiate(const Obj* original, const Types::Vector3& position);
 
 private:
 	static bool compareBaseObjects(const Object& lhs, const Object& rhs);

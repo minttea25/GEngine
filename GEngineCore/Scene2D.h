@@ -1,6 +1,8 @@
 #pragma once
 
 #include "CoreHeader.h"
+#include "Scene.h"
+#include "Windows.h"
 
 NAMESPACE_OPEN(GEngine)
 

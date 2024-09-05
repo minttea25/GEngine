@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreHeader.h"
+#include <Windows.h>
 
 NAMESPACE_OPEN(GEngine)
 
