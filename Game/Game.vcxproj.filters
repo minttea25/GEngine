@@ -27,7 +27,6 @@
     </ClInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="TestCodes.h" />
-    <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -47,6 +46,5 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
 </Project>

@@ -9,12 +9,12 @@ NAMESPACE_OPEN(GEngine)
 
 void Collector::Free_GameObject(GameObject* o)
 {
-	for (auto& kv : o->_components)
+	/*for (auto& kv : o->_components)
 	{
 		if (kv.second)
 			gdelete(kv.second);
 	}
-	if (o->_transform) gdelete(o->_transform);
+	if (o->_transform) gdelete(o->_transform);*/
 }
 
 void Collector::Free_SceneManager()
@@ -39,13 +39,5 @@ void Collector::Free_Scene2D(Scene2D* o)
 	}
 }
 
-void Collector::Free_Scene3D(Scene2D* o)
-{
-	for (auto& kv : o->_gameObjects)
-	{
-		if (kv.second)
-			gdelete(kv.second);
-	}
-}
 
 NAMESPACE_CLOSE

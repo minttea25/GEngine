@@ -135,7 +135,7 @@
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)dll\$(Configuration)\GEngineCore.dll" "$(SolutionDir)builds\$(Configuration)"</Command>
+      <Command>xcopy /y "$(SolutionDir)dll\$(Configuration)\GEngineCore.dll" "$(SolutionDir)builds\$(Configuration)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

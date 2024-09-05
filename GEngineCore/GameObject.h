@@ -3,18 +3,17 @@
 NAMESPACE_OPEN(GEngine)
 
 #include "CoreHeader.h"
-#include "Component.h"
-#include <typeinfo>
-#include <typeindex>
+#include <concepts>
 
 class Transform;
+class Component;
 
 class GameObject : public Object
 {
 	using ID = uint32_t;
 public:
-	GameObject();
-	virtual ~GameObject();
+	G_ENGINE_CORE_API GameObject();
+	G_ENGINE_CORE_API virtual ~GameObject();
 
 	G_ENGINE_CORE_API uint32_t GetOID() const { return _oid; }
 	G_ENGINE_CORE_API void SetLayerIndex(const uint32_t index) { _layerIndex = index; }
@@ -26,17 +25,17 @@ public:
 
 	G_ENGINE_CORE_API GameObject* gameObject() { return this; }
 
-	//template<Component_t Com>
-	//void AddComponent();
+	template<typename Com> requires std::derived_from<Com, Component>
+	void AddComponent();
 
-	//template<Component_t Com>
-	//G_ENGINE_CORE_API Com* GetComponent();
+	template<typename Com> requires std::derived_from<Com, Component>
+	Com* GetComponent();
 
-	//template<Component_t Com>
-	//bool TryGetComponent(OUT Com*& component);
+	template<typename Com> requires std::derived_from<Com, Component>
+	bool TryGetComponent(OUT Com*& component);
 
 	//template<>
-	//G_ENGINE_CORE_API Transform* GetComponent<Transform>();
+	//Transform* GetComponent<Transform>();
 
 public:
 	G_ENGINE_CORE_API virtual void Update() {};
@@ -64,45 +63,44 @@ private:
 	friend class Collector;
 };
 
-//template<Component_t Com>
-//inline Com* GameObject::GetComponent()
-//{
-//	auto it = _components.find(std::type_index(typeid(Com)));
-//	if (it != _components.end())
-//	{
-//		return dynamic_cast<Com*>(it->second);
-//		/*Com* com = static_cast<Com*>(it->second);
-//		if (com) return com;
-//		else return nullptr;*/
-//	}
-//	else return nullptr;
-//}
+template<typename Com> requires std::derived_from<Com, Component>
+inline void GameObject::AddComponent()
+{
+	auto idx = std::type_index(typeid(Com));
+	auto it = _components.find(idx);
+	if (it == _components.end())
+	{
+		_components.insert(std::make_pair(idx, GNEW(Com)));
+	}
+	else
+	{
+		// TODO : ignored?
+		return;
+	}
+}
 
-//template<Component_t Com>
-//inline bool GameObject::TryGetComponent(OUT Com*& component)
-//{
-//	auto it = _components.find(std::type_index(typeid(Com)));
-//	if (it == _components.end()) return false;
-//	else
-//	{
-//		component = static_cast<Com*>(it->second);
-//		return component != nullptr;
-//	}
-//}
-//
-//template<Component_t Com>
-//inline void GameObject::AddComponent()
-//{
-//	auto it = _components.find(std::type_index(typeid(Com)));
-//	if (it != _components.end())
-//	{
-//		// TODO : Error
-//		return;
-//	}
-//
-//	Com* com = GNEW(Com);
-//	_components[std::type_index(typeid(Com))] = com;
-//	com->set_GameObject(this);
-//}
+template<typename Com> requires std::derived_from<Com, Component>
+inline Com* GameObject::GetComponent()
+{
+	auto it = _components.find(std::type_index(typeid(Com)));
+	if (it != _components.end())
+	{
+		Com* com = static_cast<Com*>(it->second);
+		if (com) return com;
+	}
+	else return nullptr;
+}
+
+template<typename Com> requires std::derived_from<Com, Component>
+inline bool GameObject::TryGetComponent(OUT Com*& component)
+{
+	auto it = _components.find(std::type_index(typeid(Com)));
+	if (it == _components.end()) return false;
+	else
+	{
+		component = static_cast<Com*>(it->second);
+		return component != nullptr;
+	}
+}
 
 NAMESPACE_CLOSE

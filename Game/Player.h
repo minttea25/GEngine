@@ -1,5 +1,6 @@
 #pragma once
 
+#include <typeindex>
 #include "Windows.h"
 #include "Object.h"
 #include "MonoBehaviour.h"
@@ -17,5 +18,8 @@ public:
 class EGameObject : public GEngine::GameObject
 {
 public:
-
+    EGameObject() {}
+    ~EGameObject() {}
 };
+
+//template __declspec(dllimport) void GEngine::GameObject::AddComponent<Player>();

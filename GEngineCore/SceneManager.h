@@ -2,6 +2,7 @@
 
 #include "CoreHeader.h"
 #include "Scene.h"
+#include "Scene2D.h"
 
 NAMESPACE_OPEN(GEngine)
 
@@ -11,8 +12,9 @@ public:
 	G_ENGINE_CORE_API static void Init();
 	G_ENGINE_CORE_API static void Clear();
 
-	template<Scene_t Sc>
-	static uint16_t CreateScene(const String& name);
+	G_ENGINE_CORE_API static Scene* CreateScene(const String& name, const SceneType type);
+	G_ENGINE_CORE_API static Scene2D* CreateScene2D(const String& name);
+	//static Scene3D* CreateScene3D(const String& name);
 
 	G_ENGINE_CORE_API static void LoadScene(const String& name);
 	G_ENGINE_CORE_API static void LoadScene(const uint16_t sceneIndex);
@@ -29,6 +31,9 @@ public:
 		else return nullptr;
 	}
 
+	G_ENGINE_CORE_API static Scene* GetScene(const String& name);
+	G_ENGINE_CORE_API static Scene2D* GetScene2D(const String& name);
+
 
 	G_ENGINE_CORE_API static void Update();
 	G_ENGINE_CORE_API static void LateUpdate();
@@ -39,34 +44,49 @@ public:
 	G_ENGINE_CORE_API static Delegate2<Scene*, Scene* > SceneChanged;
 private:
 	static Scene* s_activeScene;
-	static std::vector<Scene*> s_scenes;
+	static Vector<Scene*> s_scenes;
 
 	friend class Collector;
 };
 
-template<Scene_t Sc>
-inline uint16_t SceneManager::CreateScene(const String& name)
+inline Scene* SceneManager::CreateScene(const String& name, const SceneType type)
 {
 #pragma warning(push)
 #pragma warning(disable: 4267)
 	const int n = s_scenes.size();
 #pragma warning(pop)
-	Sc* scene = GNEW_EX(Sc, n);
-	if (auto s = static_cast<Scene*>(scene))
-	{
-		s->SetName(name);
-		s_scenes.push_back(scene);
 
-		return n;
+	if (type == SceneType::D2)
+	{
+		Scene2D* scene = GNEW_EX(Scene2D, n);
+		return scene;
+	}
+	else if (type == SceneType::D3)
+	{
+		ASSERT_CRASH("Not implemented");
+		// TEMP
+		return nullptr;
 	}
 	else
 	{
-		// TODO : Error
-		return 0xFFFF;
+		return nullptr;
 	}
 }
 
-inline void SceneManager::LoadScene(const std::wstring& name)
+inline Scene2D* SceneManager::CreateScene2D(const String& name)
+{
+#pragma warning(push)
+#pragma warning(disable: 4267)
+	const int n = s_scenes.size();
+#pragma warning(pop)
+
+	Scene2D* scene = GNEW_EX(Scene2D, n);
+	scene->SetName(name);
+	s_scenes.push_back(scene);
+	return scene;
+}
+
+inline void SceneManager::LoadScene(const String& name)
 {
 	for (int i = 0; i < s_scenes.size(); ++i)
 	{

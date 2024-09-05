@@ -19,7 +19,7 @@ GameObject::~GameObject()
 	Collector::Free_GameObject(this);
 
 	_transform = nullptr;
-	_components.clear();
+	//_components.clear();
 }
 
 void GameObject::SetPos(const Types::Vector3& position)

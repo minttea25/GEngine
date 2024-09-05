@@ -24,7 +24,6 @@
 #include <set>
 #include <unordered_set>
 #include <typeindex>
-#include <typeinfo>
 
 
 
@@ -45,8 +44,8 @@
 #include "GTime.h"
 #include "Input.h"
 #include "Object.h"
-#include "GameObject.h"
-#include "Layer.h"
+//#include "GameObject.h"
+//#include "Layer.h"
 
 //#include "Component.h"
 //#include "Transform.h"

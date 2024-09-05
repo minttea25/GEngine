@@ -135,7 +135,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    // Add codes here...
    LoadScene();
-
+   AddPlayer();
 
    return TRUE;
 }

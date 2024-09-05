@@ -21,6 +21,8 @@ public:
 	G_ENGINE_CORE_API void SetName(const String& name) { _name = name; }
 	G_ENGINE_CORE_API String& GetName() { return _name; }
 
+	G_ENGINE_CORE_API uint16_t index() const { return _sceneIndex; }
+
 	G_ENGINE_CORE_API SceneType GetSceneType() const { return _type; }
 
 	G_ENGINE_CORE_API virtual void Update() {}
@@ -37,7 +39,7 @@ public:
 	G_ENGINE_CORE_API virtual void internal_LateUpdate() = 0;
 	G_ENGINE_CORE_API virtual void internal_Render(HDC hdc) = 0;
 protected:
-	const uint16_t _sceneIndex;
+	uint16_t _sceneIndex;
 	String _name;
 	const SceneType _type;
 

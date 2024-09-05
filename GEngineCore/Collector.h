@@ -4,6 +4,9 @@
 
 NAMESPACE_OPEN(GEngine)
 
+class GameObject;
+class Scene2D;
+
 class Collector
 {
 public:
@@ -12,8 +15,6 @@ public:
 	static void Free_SceneManager();
 
 	static void Free_Scene2D(Scene2D* o);
-
-	static void Free_Scene3D(Scene2D* o);
 };
 
 NAMESPACE_CLOSE

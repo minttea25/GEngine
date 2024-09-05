@@ -6,21 +6,21 @@ NAMESPACE_OPEN(GEngine)
 
 class GameObject;
 
-class Component : public Object
+class G_ENGINE_CORE_API Component : public Object
 {
 public:
 	Component();
 	virtual ~Component();
 
-	G_ENGINE_CORE_API GameObject* gameObject() { return _gameObject; }
+	GameObject* gameObject() { return _gameObject; }
 
 public:
-	G_ENGINE_CORE_API virtual void Update() {}
-	G_ENGINE_CORE_API virtual void LateUpdate() {}
-	G_ENGINE_CORE_API virtual void Render(HDC hdc) {}
+	virtual void Update() {}
+	virtual void LateUpdate() {}
+	virtual void Render(HDC hdc) {}
 
 private:
-	G_ENGINE_CORE_API void set_GameObject(GameObject* go);
+	void set_GameObject(GameObject* go);
 private:
 	GameObject* _gameObject;
 
