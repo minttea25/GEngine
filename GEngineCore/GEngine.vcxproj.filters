@@ -49,7 +49,6 @@
     <ClInclude Include="Types.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Collector.h" />
     <ClInclude Include="Layer.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -61,6 +60,24 @@
     </ClInclude>
     <ClInclude Include="Scene2D.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Collector.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreHeader.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviour.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MonoBehaviour.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +122,15 @@
     </ClCompile>
     <ClCompile Include="Collector.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Behaviour.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MonoBehaviour.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

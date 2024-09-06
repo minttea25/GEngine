@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CoreHeader.h"
+
 NAMESPACE_OPEN(GEngine)
 
 class Transform;
@@ -7,8 +9,8 @@ class Transform;
 class Object
 {
 public:
-	Object();
-	virtual ~Object();
+	G_ENGINE_CORE_API Object();
+	G_ENGINE_CORE_API virtual ~Object();
 
 	G_ENGINE_CORE_API void SetName(const String& name) { _name = name; }
 	G_ENGINE_CORE_API String& name() { return _name; }
@@ -18,14 +20,14 @@ public:
 
 	bool Equals(Object other) const;
 
-	template<Object_t Obj>
-	G_ENGINE_CORE_API static Obj* Instantiate(const Obj* original, const Types::Vector3& position, Transform& parent, const int layerIndex = 0);
-	template<Object_t Obj>
-	G_ENGINE_CORE_API static Obj* Instantiate(const Obj* original);
-	template<Object_t Obj>
-	G_ENGINE_CORE_API static Obj* Instantiate(const Obj* original, Transform& parent);
-	template<Object_t Obj>
-	G_ENGINE_CORE_API static Obj* Instantiate(const Obj* original, const Types::Vector3& position);
+	template<typename Obj> requires std::derived_from<Obj, Object>
+	static Obj* Instantiate(const Obj* original, const Types::Vector3& position, Transform& parent, const int layerIndex = 0);
+	template<typename Obj> requires std::derived_from<Obj, Object>
+	static Obj* Instantiate(const Obj* original);
+	template<typename Obj> requires std::derived_from<Obj, Object>
+	static Obj* Instantiate(const Obj* original, Transform& parent);
+	template<typename Obj> requires std::derived_from<Obj, Object>
+	static Obj* Instantiate(const Obj* original, const Types::Vector3& position);
 
 private:
 	static bool compareBaseObjects(const Object& lhs, const Object& rhs);
@@ -36,28 +38,28 @@ private:
 
 
 
-template<Object_t Obj>
+template<typename Obj> requires std::derived_from<Obj, Object>
 inline Obj* Object::Instantiate(const Obj* original, const Types::Vector3& position, Transform& parent, const int layerIndex)
 {
 	// TODO
 	return nullptr;
 }
 
-template<Object_t Obj>
+template<typename Obj> requires std::derived_from<Obj, Object>
 inline Obj* Object::Instantiate(const Obj* original)
 {
 	// TODO
 	return nullptr;
 }
 
-template<Object_t Obj>
+template<typename Obj> requires std::derived_from<Obj, Object>
 inline Obj* Object::Instantiate(const Obj* original, Transform& parent)
 {
 	// TODO
 	return nullptr;
 }
 
-template<Object_t Obj>
+template<typename Obj> requires std::derived_from<Obj, Object>
 inline Obj* Object::Instantiate(const Obj* original, const Types::Vector3& position)
 {
 	// TODO

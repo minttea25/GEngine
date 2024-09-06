@@ -1,5 +1,8 @@
 #pragma once
 
+#include "CoreHeader.h"
+#include "Component.h"
+
 NAMESPACE_OPEN(GEngine)
 class Transform final : public Component
 {

@@ -8,7 +8,7 @@ Layer::Layer(Scene2D* scene, int order)
 
 }
 
-Layer::Layer(Scene2D* scene, int order, std::wstring& name)
+Layer::Layer(Scene2D* scene, int order, String& name)
 	: _order(order), _gameObjects{}, _scene(scene), _name(name)
 {
 }

@@ -1,5 +1,9 @@
 #include "pch.h"
+
+#include "Layer.h"
+#include "GameObject.h"
 #include "Scene2D.h"
+#include "Collector.h"
 
 NAMESPACE_OPEN(GEngine)
 
@@ -33,7 +37,7 @@ void Scene2D::RemoveGameObject(const uint32_t oid)
 }
 
 
-void Scene2D::InitLayer(std::wstring* names, const int len)
+void Scene2D::InitLayer(String* names, const int len)
 {
 	_layers.clear();
 
@@ -43,7 +47,7 @@ void Scene2D::InitLayer(std::wstring* names, const int len)
 	}
 }
 
-int Scene2D::AddLayer(std::wstring& name)
+int Scene2D::AddLayer(String& name)
 {
 #pragma warning(push)
 #pragma warning(disable: 4267)

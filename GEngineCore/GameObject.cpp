@@ -1,13 +1,16 @@
 #include "pch.h"
 #include "GameObject.h"
+#include "Component.h"
+#include "Transform.h"
+#include "Collector.h"
 
 NAMESPACE_OPEN(GEngine)
 
-std::atomic<GameObject::ID> GameObject::s_oid = 0;
+GameObject::ID GameObject::s_oid = 0;
 
 GameObject::GameObject()
 	:_transform(GNEW(Transform)),
-	_oid(s_oid.fetch_add(1))
+	_oid(++s_oid), _layerIndex(0)
 {
 }
 
@@ -16,7 +19,7 @@ GameObject::~GameObject()
 	Collector::Free_GameObject(this);
 
 	_transform = nullptr;
-	_components.clear();
+	//_components.clear();
 }
 
 void GameObject::SetPos(const Types::Vector3& position)
@@ -62,10 +65,11 @@ void GameObject::internal_Render(HDC hdc)
 	}
 }
 
-//template<>
-//Transform* GameObject::GetComponent()
-//{
-//	return _transform;
-//}
+template<>
+Transform* GameObject::GetComponent<Transform>()
+{
+	return _transform;
+}
+
 
 NAMESPACE_CLOSE

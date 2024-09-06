@@ -10,7 +10,7 @@
 * Values
 ************************************/
 
-constexpr auto UNSIGNED_INVALID = 0;
+//constexpr auto UNSIGNED_INVALID = 0;
 
 /***********************************
 * Utils

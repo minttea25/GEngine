@@ -24,7 +24,6 @@
 #include <set>
 #include <unordered_set>
 #include <typeindex>
-#include <typeinfo>
 
 
 
@@ -39,22 +38,24 @@
 #include "Vector3.h"
 #include "Vector2Int.h"
 #include "Vector4.h"
+#include "Rect.h"
 
 /*********** Core ****************/
 #include "GTime.h"
+#include "Input.h"
 #include "Object.h"
-#include "GameObject.h"
-#include "Layer.h"
+//#include "GameObject.h"
+//#include "Layer.h"
 
-#include "Component.h"
-#include "Transform.h"
+//#include "Component.h"
+//#include "Transform.h"
+//
+//#include "Scene.h"
+//#include "Scene2D.h"
+//#include "SceneManager.h"
 
-#include "Scene.h"
-#include "Scene2D.h"
-#include "SceneManager.h"
 
-
-#include "Collector.h"
+//#include "Collector.h"
 
 
 #endif //PCH_H

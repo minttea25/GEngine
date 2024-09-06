@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CoreHeader.h"
+
 #include <windows.h>
 #include <winnt.h>
 

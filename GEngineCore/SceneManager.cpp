@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SceneManager.h"
+#include "Collector.h"
 
 NAMESPACE_OPEN(GEngine)
 
@@ -19,6 +20,24 @@ void SceneManager::Clear()
 
 	s_activeScene = nullptr;
 	s_scenes.clear();
+}
+
+G_ENGINE_CORE_API Scene* SceneManager::GetScene(const String& name)
+{
+	for (int i = 0; i < s_scenes.size(); ++i)
+	{
+		if (name.compare(s_scenes[i]->GetName()) == 0)
+		{
+			return s_scenes[i];
+		}
+	}
+	return nullptr;
+}
+
+G_ENGINE_CORE_API Scene2D* SceneManager::GetScene2D(const String& name)
+{
+	auto s = GetScene(name);
+	return s == nullptr ? nullptr : static_cast<Scene2D*>(s);
 }
 
 void SceneManager::Update()
