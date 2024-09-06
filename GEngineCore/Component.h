@@ -10,6 +10,7 @@ class G_ENGINE_CORE_API Component : public Object
 {
 public:
 	Component();
+	Component(GameObject* gameObject);
 	virtual ~Component();
 
 	GameObject* gameObject() { return _gameObject; }
@@ -19,7 +20,7 @@ public:
 	virtual void LateUpdate() {}
 	virtual void Render(HDC hdc) {}
 
-private:
+protected:
 	void set_GameObject(GameObject* go);
 private:
 	GameObject* _gameObject;

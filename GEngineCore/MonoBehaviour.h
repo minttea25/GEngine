@@ -7,7 +7,7 @@ NAMESPACE_OPEN(GEngine)
 class G_ENGINE_CORE_API MonoBehaviour : public Behaviour
 {
 public:
-	MonoBehaviour();
+	MonoBehaviour(GameObject* gameObject);
 	virtual ~MonoBehaviour();
 
 	// TODO : work with coroutine like Unity

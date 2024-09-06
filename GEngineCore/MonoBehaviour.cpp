@@ -3,7 +3,8 @@
 
 NAMESPACE_OPEN(GEngine)
 
-MonoBehaviour::MonoBehaviour()
+MonoBehaviour::MonoBehaviour(GameObject* gameObject)
+	: Behaviour(gameObject)
 {
 }
 

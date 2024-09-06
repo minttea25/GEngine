@@ -5,7 +5,6 @@ NAMESPACE_OPEN(GEngine)
 #include "CoreHeader.h"
 #include <concepts>
 
-class Transform;
 class Component;
 
 class GameObject : public Object
@@ -15,6 +14,9 @@ public:
 	G_ENGINE_CORE_API GameObject();
 	G_ENGINE_CORE_API virtual ~GameObject();
 
+	G_ENGINE_CORE_API GameObject* gameObject() { return this; }
+	G_ENGINE_CORE_API Transform* transform() { return _transform; }
+
 	G_ENGINE_CORE_API uint32_t GetOID() const { return _oid; }
 	G_ENGINE_CORE_API void SetLayerIndex(const uint32_t index) { _layerIndex = index; }
 	G_ENGINE_CORE_API int GetLayerIndex() const { return _layerIndex; }
@@ -22,8 +24,6 @@ public:
 	G_ENGINE_CORE_API void SetPos(const Types::Vector3& position);
 	G_ENGINE_CORE_API void SetPos(const float x, const float y, const float z = 0);
 	G_ENGINE_CORE_API void SetParent(Transform& parent);
-
-	G_ENGINE_CORE_API GameObject* gameObject() { return this; }
 
 	template<typename Com> requires std::derived_from<Com, Component>
 	void AddComponent();
@@ -33,9 +33,6 @@ public:
 
 	template<typename Com> requires std::derived_from<Com, Component>
 	bool TryGetComponent(OUT Com*& component);
-
-	//template<>
-	//Transform* GetComponent<Transform>();
 
 public:
 	G_ENGINE_CORE_API virtual void Update() {};
@@ -63,6 +60,7 @@ private:
 	friend class Collector;
 };
 
+
 template<typename Com> requires std::derived_from<Com, Component>
 inline void GameObject::AddComponent()
 {
@@ -70,7 +68,7 @@ inline void GameObject::AddComponent()
 	auto it = _components.find(idx);
 	if (it == _components.end())
 	{
-		_components.insert(std::make_pair(idx, GNEW(Com)));
+		_components.insert(std::make_pair(idx, GNEW_EX(Com, this)));
 	}
 	else
 	{
@@ -90,6 +88,7 @@ inline Com* GameObject::GetComponent()
 	}
 	else return nullptr;
 }
+
 
 template<typename Com> requires std::derived_from<Com, Component>
 inline bool GameObject::TryGetComponent(OUT Com*& component)

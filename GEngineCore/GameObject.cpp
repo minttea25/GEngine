@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Component.h"
 #include "GameObject.h"
+#include "Component.h"
 #include "Transform.h"
 #include "Collector.h"
 
@@ -65,10 +65,11 @@ void GameObject::internal_Render(HDC hdc)
 	}
 }
 
-//template<>
-//Transform* GameObject::GetComponent()
-//{
-//	return _transform;
-//}
+template<>
+Transform* GameObject::GetComponent<Transform>()
+{
+	return _transform;
+}
+
 
 NAMESPACE_CLOSE

@@ -2,6 +2,7 @@
 
 #include "SceneManager.h"
 #include "Player.h"
+#include "Transform.h"
 #include <concepts>
 
 void LoadScene()
@@ -25,5 +26,6 @@ void AddPlayer()
 		auto e = std::is_convertible_v<Player, GEngine::MonoBehaviour>;*/
 		go->AddComponent<Player>();
 		titleScene->AddGameObject(go, 0);
+		go->SetPos(GEngine::Types::Vector3(100, 100, 0));
 	}
 }

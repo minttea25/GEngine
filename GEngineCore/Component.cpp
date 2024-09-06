@@ -9,6 +9,12 @@ Component::Component()
 
 }
 
+Component::Component(GameObject* gameObject)
+	: _gameObject(gameObject)
+{
+
+}
+
 Component::~Component()
 {
 	_gameObject = nullptr;
