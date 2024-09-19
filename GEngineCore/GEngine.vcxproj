@@ -173,6 +173,7 @@
     <ClInclude Include="concepts.h" />
     <ClInclude Include="CoreHeader.h" />
     <ClInclude Include="CoreMacro.h" />
+    <ClInclude Include="EditorResourceManager.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input.h" />
@@ -181,6 +182,9 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Rect.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceImporter.h" />
+    <ClInclude Include="Resources.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene2D.h" />
     <ClInclude Include="SceneManager.h" />
@@ -188,6 +192,7 @@
     <ClInclude Include="GTime.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Types.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector2Int.h" />
     <ClInclude Include="Vector3.h" />
@@ -197,7 +202,9 @@
     <ClCompile Include="Behaviour.cpp" />
     <ClCompile Include="Collector.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="CoreTypes.h" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="EditorResourceManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Layer.cpp" />
@@ -209,6 +216,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceImporter.cpp" />
+    <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scene2D.cpp" />
     <ClCompile Include="SceneManager.cpp" />

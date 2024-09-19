@@ -79,6 +79,17 @@
     <ClInclude Include="MonoBehaviour.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceImporter.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorResourceManager.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -132,6 +143,19 @@
     <ClCompile Include="MonoBehaviour.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="CoreTypes.h">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceImporter.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Test">
@@ -154,6 +178,9 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{84c016f3-650b-49f1-864b-81dec50dfb6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{1da7a830-bfbb-4e0e-9469-50d576d2fe34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

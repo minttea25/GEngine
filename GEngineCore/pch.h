@@ -24,12 +24,14 @@
 #include <set>
 #include <unordered_set>
 #include <typeindex>
+#include <filesystem>
 
 
 
 #include "CoreMacro.h"
 #include "concepts.h"
 #include "Types.h"
+#include "CoreTypes.h"
 
 
 /*********** Types ****************/

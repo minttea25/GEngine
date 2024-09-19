@@ -5,6 +5,7 @@
 #include "CoreMacro.h"
 #include "concepts.h"
 #include "Types.h"
+#include "CoreTypes.h"
 
 #include "Color.h"
 #include "Vector2.h"
