@@ -10,6 +10,8 @@
 #include "Vector2.h"
 #include "GTime.h"
 
+#include "EditorResourceManager.h"
+
 using namespace GEngine::Types;
 using namespace GEngine;
 
@@ -17,48 +19,55 @@ int main()
 {
     std::cout << "Hello World!\n";
 
-    std::cout << "Add(1, 2): " << Test::Add(1, 2) << '\n';
-    std::cout << "Sub(5, 3): " << Test::Sub(5, 3) << '\n';
+    GEngine::Editor::EditorResourceManager::Init();
+    GEngine::Editor::EditorResourceManager::TestImport(L"Folder");
+
+    return 0;
 
     {
-        Vector4 v4(1, 1, 1, 1);
-        std::cout << Vector4::Magnitude(v4) << '\n';
-        auto v = Vector4::Normalize(v4);
-        std::cout << v.x << ',' << v.y << ',' << v.z << ',' << v.w << '\n';
-    }
+        std::cout << "Add(1, 2): " << Test::Add(1, 2) << '\n';
+        std::cout << "Sub(5, 3): " << Test::Sub(5, 3) << '\n';
 
-    {
-        Vector3 v3(1, 1, 1);
-        std::cout << Vector3::Magnitude(v3) << '\n';
-        auto v = Vector3::Normalize(v3);
-        std::cout << v.x << ',' << v.y << ',' << v.z << '\n';
-    }
-
-    {
-        Vector2Int v2int(1, 1);
-        std::cout << v2int.magnitude() << '\n';
-        float dist = Vector2Int::Distance(v2int, Vector2Int(2, 2));
-        std::cout << dist << '\n';
-    }
-
-    {
-        Vector2 v(1, 1);
-        std::cout << v.magnitude() << '\n';
-        auto dist = Vector2::Distance(v, Vector2(4, 5));
-        std::cout << dist << '\n';
-    }
-
-    {
-        using namespace std::chrono_literals;
-
-        Time::Init();
-        
-        while (true)
         {
-            Time::Update();
+            Vector4 v4(1, 1, 1, 1);
+            std::cout << Vector4::Magnitude(v4) << '\n';
+            auto v = Vector4::Normalize(v4);
+            std::cout << v.x << ',' << v.y << ',' << v.z << ',' << v.w << '\n';
+        }
 
-            std::this_thread::sleep_for(100ms);
-            std::cout << Time::deltaTime() << '\n';
+        {
+            Vector3 v3(1, 1, 1);
+            std::cout << Vector3::Magnitude(v3) << '\n';
+            auto v = Vector3::Normalize(v3);
+            std::cout << v.x << ',' << v.y << ',' << v.z << '\n';
+        }
+
+        {
+            Vector2Int v2int(1, 1);
+            std::cout << v2int.magnitude() << '\n';
+            float dist = Vector2Int::Distance(v2int, Vector2Int(2, 2));
+            std::cout << dist << '\n';
+        }
+
+        {
+            Vector2 v(1, 1);
+            std::cout << v.magnitude() << '\n';
+            auto dist = Vector2::Distance(v, Vector2(4, 5));
+            std::cout << dist << '\n';
+        }
+
+        {
+            using namespace std::chrono_literals;
+
+            Time::Init();
+
+            while (true)
+            {
+                Time::Update();
+
+                std::this_thread::sleep_for(100ms);
+                std::cout << Time::deltaTime() << '\n';
+            }
         }
     }
 

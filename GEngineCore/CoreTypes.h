@@ -1,5 +1,4 @@
 #pragma once
-
 namespace GEngine
 {
     enum TextureType : int
@@ -31,7 +30,7 @@ namespace GEngine
         NotExist
     };
 
-    static TextureType ToTextureType(const FileType type)
+    /*static TextureType ToTextureType(const FileType type)
     {
         switch (type)
         {
@@ -59,5 +58,5 @@ namespace GEngine
         default:
             return AudioType::NONE_Audio;
         }
-    }
+    }*/
 }

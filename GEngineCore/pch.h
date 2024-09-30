@@ -29,7 +29,9 @@
 
 
 #include "CoreMacro.h"
-#include "concepts.h"
+// https://en.cppreference.com/w/cpp/concepts/derived_from
+	// public inheritance => std::derived_from is true
+	// private inheritance => std::derived_from is false
 #include "Types.h"
 #include "CoreTypes.h"
 

@@ -59,11 +59,6 @@ template<typename Obj> requires std::derived_from<Obj, Object>
 inline const Obj* Resources::Load(const String& path)
 {
 	const auto obj = ResourceManager::Load(path);
-	if (obj == nullptr)
-	{
-		// error
-		ASSERT_CRASH("Can not find: " + path);
-	}
 	return obj;
 }
 

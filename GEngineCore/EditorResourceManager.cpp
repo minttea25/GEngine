@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "EditorResourceManager.h"
 #include "Utils.h"
+#include "DefaultImporter.h"
 #include <random>
 
 NAMESPACE_OPEN(GEngine::Editor)
@@ -49,7 +50,7 @@ void EditorResourceManager::Init(const String& path)
 void EditorResourceManager::AddNewResource(const String& path)
 {
 	// check extension
-	FileType fType = GetFileType_x(path);
+	/*FileType fType = GetFileType_x(path);
 	if (fType == FileType::NotExist) return;
 
 	ImporterType iType = ResourceImporter::GetImporterType(fType);
@@ -58,7 +59,7 @@ void EditorResourceManager::AddNewResource(const String& path)
 	switch (fType)
 	{
 	case GEngine::FileType::Directory:
-		addNewResource<DefaultImporter>(path, fType, rfid);
+		addNewResource<DDefaultImporter>(path, fType, rfid);
 		break;
 	case GEngine::FileType::Texture_PNG:
 	case GEngine::FileType::Texture_BMP:
@@ -77,7 +78,13 @@ void EditorResourceManager::AddNewResource(const String& path)
 	case GEngine::FileType::NotExist:
 	default:
 		break;
-	}
+	}*/
+}
+
+void EditorResourceManager::TestImport(const String& path)
+{
+	DefaultImporter importer;
+	importer.SaveMetaData(ResourcePath + path);
 }
 
 RESOURCE_FILE_ID EditorResourceManager::get_Rfid(const String& path)

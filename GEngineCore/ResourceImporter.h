@@ -9,135 +9,124 @@ NAMESPACE_OPEN(GEngine)
 
 enum class ImporterType
 {
-	None,
 	Default,
 	Texture,
 	Audio,
 	Native, // similar with Scriptable Object of Unity
+	Prefab,
+};
 
+struct ImporterObject
+{
+public:
+	explicit ImporterObject() {}
+	virtual ~ImporterObject() {}
+public:
+	virtual void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const = 0;
+	virtual void Read(rapidjson::Value& value) = 0;
+	virtual const char* ToString() = 0;
 };
 
 // for editor
 class ResourceImporter abstract
 {
+	static constexpr const auto ImporterVersion = 1;
 public:
 	static constexpr const wchar_t* META_EXTENSION_W = L".meta";
 	static constexpr const char* META_EXTENSION = ".meta";
 public:
-	ResourceImporter(const ImporterType type) : _extension(nullptr), _rfid(nullptr), _type(type), _isFolder(false) {}
-	virtual ~ResourceImporter() {}
+	ResourceImporter(const ImporterType type);
+	virtual ~ResourceImporter();
 
-	const RESOURCE_FILE_ID& resource_file_id() const { return _rfid; }
-	void SetResourceFileId(const RESOURCE_FILE_ID& rfid) { _rfid = rfid; }
-	const EXTENSION_TYPE& extension() const { return _extension; }
-	void SetExtension(const EXTENSION_TYPE& extension) { _extension = extension; }
+	const unsigned long long importer_version() const;
+	const RESOURCE_FILE_ID& resource_file_id() const;
+	const EXTENSION_TYPE& extension() const;
+	void SetData(const RESOURCE_FILE_ID& rfid, const EXTENSION_TYPE& ext);
+
 	ImporterType type() const { return _type; }
-	bool isFolder() const { return _isFolder; }
-	void SetFolder() { _isFolder = true; }
 
-
-	virtual void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const = 0;
-	virtual void Read(rapidjson::Value& value) = 0;
 
 	void SaveMetaData(const std::wstring& path) const;
+	void WriteBase(std::ofstream& ofs) const;
+protected:
+	virtual void Write(std::ofstream& ofs) const = 0;
+	virtual void Read(rapidjson::Value& value) = 0;
+protected:
+	const ImporterType _type;
+private:
+	struct ImporterBase;
+	ImporterBase* _obj;
 
+public:
 	template<typename Imp> requires std::derived_from<Imp, ResourceImporter>
-	static void Read(const ImporterType type, rapidjson::Value& value, OUT Imp*& importer)
+	static bool Read(const ImporterType type, rapidjson::Value& value, OUT Imp*& importer)
 	{
-		assert(importer == nullptr);
+		if (importer != nullptr) return false;
 
 		importer = GNEW(Imp);
 		importer->Read(value);
+
+		return true;
 	}
 
 	static ImporterType GetImporterType(const FileType type);
-
-protected:
-	void WriteBase(rapidjson::Writer<rapidjson::StringBuffer>& writer) const;
-	void ReadBase(rapidjson::Value& value);
-
-protected:
-	RESOURCE_FILE_ID _rfid;
-	ImporterType _type;
-	EXTENSION_TYPE _extension;
-	bool _isFolder;
 };
 
-class BaseImporter : public ResourceImporter
-{
-public:
-	BaseImporter() : ResourceImporter(ImporterType::None) {}
-	~BaseImporter() {}
-
-	// Inherited via Importer
-	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
-	void Read(rapidjson::Value& value) override;
-};
-
-class DefaultImporter : public ResourceImporter
-{
-public:
-	DefaultImporter() : ResourceImporter(ImporterType::Default) {}
-	~DefaultImporter() {}
-
-	// Inherited via Importer
-	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
-	void Read(rapidjson::Value& value) override;
-private:
-
-};
-
-class TextureImporter : public ResourceImporter
-{
-public:
-	TextureImporter() : ResourceImporter(ImporterType::Texture), _textureType(TextureType::NONE_Texture) {}
-	~TextureImporter() {}
-
-	TextureType textureType() const { return _textureType; }
-	void SetTextureType(const TextureType type) { _textureType = type; }
-
-	// Inherited via Importer
-	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
-	void Read(rapidjson::Value& value) override;
-
-private:
-	TextureType _textureType;
-};
-
-class AudioImporter : public ResourceImporter
-{
-public:
-	AudioImporter() : ResourceImporter(ImporterType::Audio), _audioType(AudioType::NONE_Audio) {}
-	~AudioImporter() {}
-
-	AudioType audioType() const { return _audioType; }
-	void SetAudioType(const AudioType type) { _audioType = type; }
-
-	// Inherited via Importer
-	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
-	void Read(rapidjson::Value& value) override;
-
-
-private:
-	AudioType _audioType;
-};
-
-class NativeImporter : public ResourceImporter
-{
-public:
-	NativeImporter() : ResourceImporter(ImporterType::Native), _objectFileId(0) {}
-	~NativeImporter() {}
-
-	OBJECT_FILE_ID objectFileId() const { return _objectFileId; }
-	void SetObjectFileId(OBJECT_FILE_ID id) { _objectFileId = id; }
-
-	// Inherited via Importer
-	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
-	void Read(rapidjson::Value& value) override;
-
-private:
-	OBJECT_FILE_ID _objectFileId;
-};
+//class TextureImporter : public ResourceImporter
+//{
+//public:
+//	TextureImporter();
+//	~TextureImporter();
+//
+//	TextureType textureType() const;
+//	void SetTextureType(const TextureType type);
+//
+//private:
+//	// Inherited via Importer
+//	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
+//	void Read(rapidjson::Value& value) override;
+//
+//private:
+//	struct TextureImporterObject;
+//	TextureImporterObject* _objImpl;
+//};
+//
+//class AudioImporter : public ResourceImporter
+//{
+//public:
+//	AudioImporter();
+//	~AudioImporter();
+//
+//	AudioType audioType() const;
+//	void SetAudioType(const AudioType type);
+//
+//private:
+//	// Inherited via Importer
+//	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
+//	void Read(rapidjson::Value& value) override;
+//
+//private:
+//	struct AudioImporterObject;
+//	AudioImporterObject* _objImpl;
+//};
+//
+//class NativeImporter : public ResourceImporter
+//{
+//public:
+//	NativeImporter();
+//	~NativeImporter();
+//
+//	OBJECT_FILE_ID objectFileId() const;
+//	void SetObjectFileId(OBJECT_FILE_ID id);
+//
+//private:
+//	// Inherited via Importer
+//	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
+//	void Read(rapidjson::Value& value) override;
+//
+//private:
+//	struct NativeImporterObject;
+//	NativeImporterObject* _objImpl;
+//};
 
 NAMESPACE_CLOSE;
-

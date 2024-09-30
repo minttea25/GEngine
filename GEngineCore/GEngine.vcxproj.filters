@@ -43,9 +43,6 @@
     <ClInclude Include="Transform.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="concepts.h">
-      <Filter>main</Filter>
-    </ClInclude>
     <ClInclude Include="Types.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -90,6 +87,10 @@
     </ClInclude>
     <ClInclude Include="EditorResourceManager.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="DefaultImporter.h" />
+    <ClInclude Include="CoreTypes.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -143,9 +144,6 @@
     <ClCompile Include="MonoBehaviour.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="CoreTypes.h">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
@@ -156,6 +154,7 @@
       <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="EditorResourceManager.cpp" />
+    <ClCompile Include="DefaultImporter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Test">

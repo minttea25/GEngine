@@ -9,6 +9,8 @@ NAMESPACE_OPEN(GEngine);
 
 
 RUID ResourceManager::s_ruid_issuer = 0;
+Map<String, RUID> ResourceManager::s_t_resources;
+Map<RUID, const Object*> ResourceManager::s_resources;
 
 void Resources::Init()
 {
@@ -70,30 +72,38 @@ const Object* ResourceManager::Find(const String& path)
 		return nullptr;
 	}
 
-	EXTENSION_TYPE ext = nullptr;
-	ImporterType type;
-	BaseImporter importer;
-	std::ifstream ifs(metafile);
-	if (ifs.is_open())
-	{
-		rapidjson::IStreamWrapper isw(ifs);
-		rapidjson::Document doc;
-		doc.ParseStream(isw);
+	//EXTENSION_TYPE ext = nullptr;
+	//ImporterType type;
+	//BaseImporter importer;
+	//std::ifstream ifs(metafile);
+	//if (ifs.is_open())
+	//{
+	//	rapidjson::IStreamWrapper isw(ifs);
+	//	rapidjson::Document doc;
+	//	doc.ParseStream(isw);
 
-		if (doc.IsObject())
-		{
-			importer.Read(doc);
+	//	if (doc.IsObject())
+	//	{
+	//		importer.Read(doc);
 
-			ext = importer.extension();
-			type = importer.type();
-		}
+	//		ext = importer.extension();
+	//		type = importer.type();
+	//	}
+	//	else
+	//	{
+	//		// logic error
+	//	}
 
-		ifs.close();
-	}
+	//	ifs.close();
+	//}
+	//else
+	//{
+	//	// error : can not find meta file
+	//}
 
-	// Read Original
+	//// Read Original
+	//auto file = std::filesystem::path()
 
-	// CURRENT
 }
 
 RUID ResourceManager::GetID(const String& path)
@@ -107,7 +117,7 @@ RUID ResourceManager::GetID(const String& path)
 
 Object* ResourceManager::ReadFile(const String& path, const FileType fType)
 {
-
+	return nullptr;
 }
 
 NAMESPACE_CLOSE
