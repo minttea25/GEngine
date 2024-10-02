@@ -22,7 +22,7 @@ bool IsExtension(const std::wstring& path, const std::wstring& ext)
 
 FileType GetFileType_x(const std::wstring& path)
 {
-    DWORD fileAttr = GetFileAttributes(path.c_str());
+    DWORD fileAttr = GetFileAttributesW(path.c_str());
 
     if (fileAttr == INVALID_FILE_ATTRIBUTES)
     {

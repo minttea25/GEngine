@@ -173,7 +173,6 @@
     <ClInclude Include="CoreHeader.h" />
     <ClInclude Include="CoreMacro.h" />
     <ClInclude Include="CoreTypes.h" />
-    <ClInclude Include="DefaultImporter.h" />
     <ClInclude Include="EditorResourceManager.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameObject.h" />
@@ -203,7 +202,6 @@
     <ClCompile Include="Behaviour.cpp" />
     <ClCompile Include="Collector.cpp" />
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="DefaultImporter.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="EditorResourceManager.cpp" />
     <ClCompile Include="GameObject.cpp" />

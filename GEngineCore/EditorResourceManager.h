@@ -10,22 +10,36 @@ using namespace GEngine;
 class EditorResourceManager
 {
 public:
-	static constexpr auto ResourcePath = L"..\\Resources\\";
+	G_ENGINE_CORE_API static constexpr auto DefaultResourcePath = L"..\\Resources";
 
 public:
-	G_ENGINE_CORE_API static void Init(const String& path = ResourcePath);
-
-	static void AddNewResource(const String& path);
-
-	G_ENGINE_CORE_API static void TestImport(const String& path);
-
-	//template<typename Imp> requires std::derived_from<Imp, ResourceImporter>
-	//static void addNewResource(const String& path, const FileType fType, const RESOURCE_FILE_ID& rfid);
-
+	G_ENGINE_CORE_API static void Init(const String& path = DefaultResourcePath);
+	G_ENGINE_CORE_API const std::wstring& resource_file_path() const { return s_resourceFilePath; }
+	/// <summary>
+	/// Import new resource and create a meta file of it. 'path' should be a fullpath.
+	/// </summary>
+	/// <param name="path">fullpath of the resource</param>
+	/// <returns>true successful, false otherwise</returns>
+	G_ENGINE_CORE_API static bool ImportNewResource(const String& path);
 
 private:
+	template<typename Imp> requires std::derived_from<Imp, ResourceImporter>
+	static bool import_new_resource(const String& path, const RESOURCE_FILE_ID& rfid);
+
+	static const String& fullpath(const String& file) { return s_resourceFilePath + L"\\" + file; }
+private:
 	static RESOURCE_FILE_ID get_Rfid(const String& path);
+private:
+	static String s_resourceFilePath;
 };
+
+template<typename Imp> requires std::derived_from<Imp, ResourceImporter>
+inline bool EditorResourceManager::import_new_resource(const String& path, const RESOURCE_FILE_ID& rfid)
+{
+	Imp importer(path, rfid);
+	importer.CreateMetaData(path);
+	return true;
+}
 
 
 NAMESPACE_CLOSE

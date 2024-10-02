@@ -35,7 +35,7 @@ public:
 	static constexpr const wchar_t* META_EXTENSION_W = L".meta";
 	static constexpr const char* META_EXTENSION = ".meta";
 public:
-	ResourceImporter(const ImporterType type);
+	ResourceImporter(const ImporterType type, const RESOURCE_FILE_ID& rfid, const EXTENSION_TYPE& ext);
 	virtual ~ResourceImporter();
 
 	const unsigned long long importer_version() const;
@@ -45,10 +45,18 @@ public:
 
 	ImporterType type() const { return _type; }
 
-
-	void SaveMetaData(const std::wstring& path) const;
+	/// <summary>
+	/// Create meta data file about the resource.
+	/// </summary>
+	/// <param name="fullpath">full path of the resource</param>
+	void CreateMetaData(const std::wstring & fullpath) const;
 	void WriteBase(std::ofstream& ofs) const;
 protected:
+	/// <summary>
+	/// Child class should analyze into the resource file at its constructor.
+	/// </summary>
+	/// <param name="path">the resource file path</param>
+	virtual void Analyze(const String& path) = 0;
 	virtual void Write(std::ofstream& ofs) const = 0;
 	virtual void Read(rapidjson::Value& value) = 0;
 protected:
@@ -72,61 +80,113 @@ public:
 	static ImporterType GetImporterType(const FileType type);
 };
 
-//class TextureImporter : public ResourceImporter
-//{
-//public:
-//	TextureImporter();
-//	~TextureImporter();
-//
-//	TextureType textureType() const;
-//	void SetTextureType(const TextureType type);
-//
-//private:
-//	// Inherited via Importer
-//	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
-//	void Read(rapidjson::Value& value) override;
-//
-//private:
-//	struct TextureImporterObject;
-//	TextureImporterObject* _objImpl;
-//};
-//
-//class AudioImporter : public ResourceImporter
-//{
-//public:
-//	AudioImporter();
-//	~AudioImporter();
-//
-//	AudioType audioType() const;
-//	void SetAudioType(const AudioType type);
-//
-//private:
-//	// Inherited via Importer
-//	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
-//	void Read(rapidjson::Value& value) override;
-//
-//private:
-//	struct AudioImporterObject;
-//	AudioImporterObject* _objImpl;
-//};
-//
-//class NativeImporter : public ResourceImporter
-//{
-//public:
-//	NativeImporter();
-//	~NativeImporter();
-//
-//	OBJECT_FILE_ID objectFileId() const;
-//	void SetObjectFileId(OBJECT_FILE_ID id);
-//
-//private:
-//	// Inherited via Importer
-//	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
-//	void Read(rapidjson::Value& value) override;
-//
-//private:
-//	struct NativeImporterObject;
-//	NativeImporterObject* _objImpl;
-//};
+struct DefaultImporterObject final : public ImporterObject
+{
+public:
+	DefaultImporterObject() : ImporterObject(), is_folder(false) {}
+	~DefaultImporterObject() {}
+
+	// Inherited via ImporterObject
+	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
+	void Read(rapidjson::Value& value) override;
+	const char* ToString() override;
+public:
+	bool is_folder;
+};
+
+class DefaultImporter final : public ResourceImporter
+{
+public:
+	explicit DefaultImporter(const String& file, const RESOURCE_FILE_ID& rfid);
+	~DefaultImporter();
+
+	// Inherited via ResourceImporter
+	void Analyze(const String& path) override;
+	void Write(std::ofstream& ofs) const override;
+	void Read(rapidjson::Value& value) override;
+public:
+	DefaultImporterObject obj;
+};
+
+struct TextureImporterObject : public ImporterObject
+{
+public:
+	TextureImporterObject() : ImporterObject() {}
+	~TextureImporterObject() {}
+
+	// Inherited via ImporterObject
+	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
+	void Read(rapidjson::Value& value) override;
+	const char* ToString() override;
+public:
+};
+
+class TextureImporter final : public ResourceImporter
+{
+public:
+	explicit TextureImporter(const String& file, const RESOURCE_FILE_ID& rfid);
+	~TextureImporter();
+
+	// Inherited via ResourceImporter
+	void Analyze(const String& path) override;
+	void Write(std::ofstream& ofs) const override;
+	void Read(rapidjson::Value& value) override;
+public:
+	TextureImporterObject obj;
+};
+
+struct AudioImporterObject : public ImporterObject
+{
+public:
+	AudioImporterObject() : ImporterObject() {}
+	~AudioImporterObject() {}
+
+	// Inherited via ImporterObject
+	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
+	void Read(rapidjson::Value& value) override;
+	const char* ToString() override;
+public:
+};
+
+class AudioImporter final : public ResourceImporter
+{
+public:
+	explicit AudioImporter(const String& file, const RESOURCE_FILE_ID& rfid);
+	~AudioImporter();
+
+	// Inherited via ResourceImporter
+	void Analyze(const String& path) override;
+	void Write(std::ofstream& ofs) const override;
+	void Read(rapidjson::Value& value) override;
+public:
+	AudioImporterObject obj;
+};
+
+struct NativeImporterObject : public ImporterObject
+{
+public:
+	NativeImporterObject() : ImporterObject() {}
+	~NativeImporterObject() {}
+
+	// Inherited via ImporterObject
+	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
+	void Read(rapidjson::Value& value) override;
+	const char* ToString() override;
+};
+
+class NativeImporter final : public ResourceImporter
+{
+public:
+	explicit NativeImporter(const String& file, const RESOURCE_FILE_ID& rfid);
+	~NativeImporter();
+
+public:
+	NativeImporterObject obj;
+
+	// Inherited via ResourceImporter
+	void Analyze(const String& path) override;
+	void Write(std::ofstream& ofs) const override;
+	void Read(rapidjson::Value& value) override;
+};
 
 NAMESPACE_CLOSE;

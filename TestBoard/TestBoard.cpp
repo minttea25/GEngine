@@ -20,7 +20,6 @@ int main()
     std::cout << "Hello World!\n";
 
     GEngine::Editor::EditorResourceManager::Init();
-    GEngine::Editor::EditorResourceManager::TestImport(L"Folder");
 
     return 0;
 

@@ -2,8 +2,6 @@
 #include "ResourceImporter.h"
 #include "Resource.h"
 
-#include "DefaultImporter.h"
-
 #include "rapidjson/prettywriter.h"
 #include <fstream>
 
@@ -18,66 +16,19 @@ NAMESPACE_OPEN(GEngine)
 struct ResourceImporter::ImporterBase
 {
 public:
-	ImporterBase(const ImporterType& type)
+	ImporterBase(const RESOURCE_FILE_ID& _rfid, const EXTENSION_TYPE& _ext)
 		: importer_version(ResourceImporter::ImporterVersion),
-		rfid(""), extension("")
+		rfid(_rfid), extension(_ext)
 	{
 	}
-public:
-	/*void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const
-	{
-		__WRITE_KEY_STR(rfid);
-		__WRITE_KEY(isFolder, Bool);
-		__WRITE_KEY_STR(extension);
-		std::string s;
-		switch (type)
-		{
-		case ImporterType::Default:
-			s = "DefaultImporter";
-			break;
-		case ImporterType::Texture:
-			s = "TextureImporter";
-			break;
-		case ImporterType::Audio:
-			s = "AudioImporter";
-			break;
-		case ImporterType::Native:
-			s = "NativeImporter";
-			break;
-		default:
-			s = "DefaultImporter";
-			break;
-		}
-		writer.Key("ImporterType");
-		writer.String(s.c_str());
-	}
-
-	void Read(rapidjson::Value& value)
-	{
-		if (__READ_KEY(rfid, String))
-		{
-			__GET_VALUE(rfid, String);
-		}
-
-		if (__READ_KEY(extension, String))
-		{
-			__GET_VALUE(extension, String);
-		}
-
-		if (__READ_KEY(isFolder, Bool))
-		{
-			__GET_VALUE(isFolder, Bool);
-		}
-	}*/
-
 public:
 	unsigned long long importer_version;
 	RESOURCE_FILE_ID rfid;
 	EXTENSION_TYPE extension;
 };
 
-ResourceImporter::ResourceImporter(const ImporterType type)
-	: _type(type), _obj(new ImporterBase(type))
+ResourceImporter::ResourceImporter(const ImporterType type, const RESOURCE_FILE_ID& rfid, const EXTENSION_TYPE& ext)
+	: _type(type), _obj(new ImporterBase(rfid, ext))
 {
 }
 
@@ -129,21 +80,9 @@ ImporterType ResourceImporter::GetImporterType(const FileType type)
 	}
 }
 
-void ResourceImporter::SaveMetaData(const std::wstring& path) const
+void ResourceImporter::CreateMetaData(const std::wstring & fullpath) const
 {
-	//rapidjson::StringBuffer buffer;
-	//rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
-
-	//writer.StartObject();
-
-	//// 1. Write resource importer object
-	//_obj->Write(writer);
-	//// 2. Wrtie specified importer object
-	//Write(writer);
-
-	//writer.EndObject();
-
-	std::filesystem::path original(path);
+	std::filesystem::path original(fullpath);
 	std::filesystem::path metaPath = original;
 	metaPath.replace_extension(META_EXTENSION_W);
 
@@ -165,170 +104,205 @@ void ResourceImporter::WriteBase(std::ofstream& ofs) const
 		<< "\nExtension: " << _obj->extension;
 }
 
+void DefaultImporterObject::Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const
+{
+	writer.Key("is_folder");
+	writer.Bool(is_folder);
+}
 
-//struct TextureImporter::TextureImporterObject : public ImporterObject
-//{
-//public:
-//	TextureImporterObject() : ImporterObject(), res() {}
-//	~TextureImporterObject() {}
-//
-//	// Inherited via ImporterObject
-//	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override
-//	{
-//		writer.Key("texture_type");
-//		writer.Int(res.textureType());
-//	}
-//	void Read(rapidjson::Value& value) override
-//	{
-//		if (value.HasMember("texture_type") && value["texture_type"].IsInt())
-//		{
-//			res.SetTextureType((TextureType)value["texture_type"].GetInt());
-//		}
-//	}
-//
-//public:
-//	TextureResource res;
-//};
-//
-//TextureImporter::TextureImporter()
-//	: ResourceImporter(ImporterType::Texture), _objImpl(new TextureImporterObject())
-//{
-//}
-//
-//TextureImporter::~TextureImporter()
-//{
-//	delete _objImpl;
-//}
-//
-//TextureType TextureImporter::textureType() const
-//{
-//	return _objImpl->res.textureType();
-//}
-//
-//void TextureImporter::SetTextureType(const TextureType type)
-//{
-//	_objImpl->res.SetTextureType(type);
-//}
-//
-//void TextureImporter::Write(std::ofstream& ofs) const
-//{
-//	_objImpl->Write(writer);
-//}
-//
-//void TextureImporter::Read(rapidjson::Value& value)
-//{
-//	_objImpl->Read(value);
-//}
-//
-//struct AudioImporter::AudioImporterObject : public ImporterObject
-//{
-//
-//public:
-//	AudioImporterObject()
-//		: ImporterObject(), res()
-//	{
-//	}
-//
-//	~AudioImporterObject() {}
-//
-//	// Inherited via ImporterObject
-//	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override
-//	{
-//		writer.Key("audio_type"); writer.Int(res.audioType());
-//	}
-//	void Read(rapidjson::Value& value) override
-//	{
-//		if (value.HasMember("audio_type") && value["audio_type"].IsInt())
-//		{
-//			res.SetAudioType((AudioType)value["audio_type"].GetInt());
-//		}
-//	}
-//public:
-//	AudioResource res;
-//};
-//
-//AudioImporter::AudioImporter()
-//	: ResourceImporter(ImporterType::Audio), _objImpl(new AudioImporterObject())
-//{
-//
-//}
-//
-//AudioImporter::~AudioImporter()
-//{
-//	delete _objImpl;
-//}
-//
-//AudioType AudioImporter::audioType() const
-//{
-//	return _objImpl->res.audioType();
-//}
-//
-//void AudioImporter::SetAudioType(const AudioType type)
-//{
-//	_objImpl->res.SetAudioType(type);
-//}
-//
-//void AudioImporter::Write(std::ofstream& ofs) const
-//{
-//	_objImpl->Write(writer);
-//}
-//
-//void AudioImporter::Read(rapidjson::Value& value)
-//{
-//	_objImpl->Read(value);
-//}
-//
-//
-//struct NativeImporter::NativeImporterObject : public ImporterObject
-//{
-//public:
-//	NativeImporterObject() : ImporterObject(), res() {}
-//	~NativeImporterObject() {}
-//
-//	// Inherited via ImporterObject
-//	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override
-//	{
-//		__WRITE_KEY(objectFileId, Uint64);
-//	}
-//	void Read(rapidjson::Value& value) override
-//	{
-//		if (value.HasMember("objectFileId") && value["objectFileId"].IsUint64())
-//		{
-//			objectFileId = value["objectFileId"].GetUint64();
-//		}
-//	}
-//public:
-//	OBJECT_FILE_ID objectFileId;
-//};
-//
-//NativeImporter::NativeImporter()
-//	: ResourceImporter(ImporterType::Native), _objImpl(new NativeImporterObject())
-//{
-//}
-//
-//NativeImporter::~NativeImporter()
-//{
-//	delete _objImpl;
-//}
-//
-//OBJECT_FILE_ID NativeImporter::objectFileId() const
-//{
-//	return _objImpl->objectFileId;
-//}
-//
-//void NativeImporter::SetObjectFileId(OBJECT_FILE_ID id)
-//{
-//	_objImpl->objectFileId = id;
-//}
-//
-//void NativeImporter::Write(std::ofstream& ofs) const
-//{
-//	_objImpl->Write(writer);
-//}
-//
-//void NativeImporter::Read(rapidjson::Value& value)
-//{
-//	_objImpl->Read(value);
-//}
+void DefaultImporterObject::Read(rapidjson::Value& value)
+{
+	if (value.HasMember("is_folder") && value["is_folder"].IsBool())
+	{
+		is_folder = value["is_folder"].GetBool();
+	}
+}
+
+const char* DefaultImporterObject::ToString()
+{
+	rapidjson::StringBuffer buffer;
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+
+	writer.StartObject();
+	Write(writer);
+	writer.EndObject();
+
+	return buffer.GetString();
+}
+
+
+DefaultImporter::DefaultImporter(const String& file, const RESOURCE_FILE_ID& rfid)
+	: ResourceImporter(ImporterType::Default, rfid, std::filesystem::path(file).string())
+{
+	Analyze(file);
+}
+
+DefaultImporter::~DefaultImporter()
+{
+}
+
+void DefaultImporter::Analyze(const String& path)
+{
+	DWORD attr = GetFileAttributesW(path.c_str());
+	if (attr & FILE_ATTRIBUTE_DIRECTORY)
+	{
+		obj.is_folder = true;
+	}
+}
+
+void DefaultImporter::Write(std::ofstream& ofs) const
+{
+	rapidjson::StringBuffer buffer;
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+
+	ofs << "DefaultImporter: \n";
+
+	writer.StartObject();
+	obj.Write(writer);
+	writer.EndObject();
+
+	ofs << buffer.GetString();
+}
+
+void DefaultImporter::Read(rapidjson::Value& value)
+{
+}
+
+TextureImporter::TextureImporter(const String& file, const RESOURCE_FILE_ID& rfid)
+	:ResourceImporter(ImporterType::Texture, rfid, std::filesystem::path(file).extension().string())
+{
+	Analyze(file);
+}
+
+TextureImporter::~TextureImporter()
+{
+}
+
+void TextureImporter::Analyze(const String& path)
+{
+}
+
+void TextureImporter::Write(std::ofstream& ofs) const
+{
+	rapidjson::StringBuffer buffer;
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+
+	ofs << "TextureImporter: \n";
+
+	writer.StartObject();
+	obj.Write(writer);
+	writer.EndObject();
+
+	ofs << buffer.GetString();
+}
+
+void TextureImporter::Read(rapidjson::Value& value)
+{
+}
+
+void TextureImporterObject::Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const
+{
+}
+
+void TextureImporterObject::Read(rapidjson::Value& value)
+{
+}
+
+const char* TextureImporterObject::ToString()
+{
+	return nullptr;
+}
+
+void AudioImporterObject::Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const
+{
+
+}
+
+void AudioImporterObject::Read(rapidjson::Value& value)
+{
+}
+
+const char* AudioImporterObject::ToString()
+{
+	return nullptr;
+}
+
+AudioImporter::AudioImporter(const String& file, const RESOURCE_FILE_ID& rfid)
+	: ResourceImporter(ImporterType::Audio, rfid, std::filesystem::path(file).extension().string())
+{
+	Analyze(file);
+}
+
+AudioImporter::~AudioImporter()
+{
+}
+
+void AudioImporter::Analyze(const String& path)
+{
+}
+
+void AudioImporter::Write(std::ofstream& ofs) const
+{
+	rapidjson::StringBuffer buffer;
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+
+	ofs << "AudioImporter: \n";
+
+	writer.StartObject();
+	obj.Write(writer);
+	writer.EndObject();
+
+	ofs << buffer.GetString();
+}
+
+void AudioImporter::Read(rapidjson::Value& value)
+{
+}
+
+void NativeImporterObject::Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const
+{
+
+}
+
+void NativeImporterObject::Read(rapidjson::Value& value)
+{
+}
+
+const char* NativeImporterObject::ToString()
+{
+	return nullptr;
+}
+
+NativeImporter::NativeImporter(const String& file, const RESOURCE_FILE_ID& rfid)
+	: ResourceImporter(ImporterType::Native, rfid, std::filesystem::path(file).extension().string())
+{
+	Analyze(file);
+}
+
+NativeImporter::~NativeImporter()
+{
+}
+
+void NativeImporter::Analyze(const String& path)
+{
+}
+
+void NativeImporter::Write(std::ofstream& ofs) const
+{
+	rapidjson::StringBuffer buffer;
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+
+	ofs << "NativeImporter: \n";
+
+	writer.StartObject();
+	obj.Write(writer);
+	writer.EndObject();
+
+	ofs << buffer.GetString();
+}
+
+void NativeImporter::Read(rapidjson::Value& value)
+{
+}
 
 NAMESPACE_CLOSE;
