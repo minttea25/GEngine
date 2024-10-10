@@ -182,8 +182,8 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Rect.h" />
-    <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceImporter.h" />
+    <ClInclude Include="ResourceMeta.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene2D.h" />
@@ -215,8 +215,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceImporter.cpp" />
+    <ClCompile Include="ResourceMeta.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scene2D.cpp" />

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ResourceImporter.h"
-#include "Resource.h"
 
 #include "rapidjson/prettywriter.h"
 #include <fstream>
@@ -134,20 +133,15 @@ const char* DefaultImporterObject::ToString()
 DefaultImporter::DefaultImporter(const String& file, const RESOURCE_FILE_ID& rfid)
 	: ResourceImporter(ImporterType::Default, rfid, std::filesystem::path(file).string())
 {
-	Analyze(file);
-}
-
-DefaultImporter::~DefaultImporter()
-{
-}
-
-void DefaultImporter::Analyze(const String& path)
-{
-	DWORD attr = GetFileAttributesW(path.c_str());
+	DWORD attr = GetFileAttributesW(file.c_str());
 	if (attr & FILE_ATTRIBUTE_DIRECTORY)
 	{
 		obj.is_folder = true;
 	}
+}
+
+DefaultImporter::~DefaultImporter()
+{
 }
 
 void DefaultImporter::Write(std::ofstream& ofs) const
@@ -168,19 +162,15 @@ void DefaultImporter::Read(rapidjson::Value& value)
 {
 }
 
-TextureImporter::TextureImporter(const String& file, const RESOURCE_FILE_ID& rfid)
-	:ResourceImporter(ImporterType::Texture, rfid, std::filesystem::path(file).extension().string())
+TextureImporter::TextureImporter(const String& file, const RESOURCE_FILE_ID& rfid, const ITextureMetaLoader* loader)
+	:ResourceImporter(ImporterType::Texture, rfid, std::filesystem::path(file).extension().string()), obj(file, loader)
 {
-	Analyze(file);
 }
 
 TextureImporter::~TextureImporter()
 {
 }
 
-void TextureImporter::Analyze(const String& path)
-{
-}
 
 void TextureImporter::Write(std::ofstream& ofs) const
 {
@@ -200,8 +190,21 @@ void TextureImporter::Read(rapidjson::Value& value)
 {
 }
 
+TextureImporterObject::TextureImporterObject(const String& path, const ITextureMetaLoader* loader)
+	: ImporterObject(), meta(loader->Load(path))
+{
+}
+
 void TextureImporterObject::Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const
 {
+	writer.Key("m_width");
+	writer.Uint(meta->width());
+	writer.Key("m_height");
+	writer.Uint(meta->height());
+	writer.Key("m_pixelFormat");
+	writer.Int(meta->pixel_format());
+	writer.Key("m_rawFormat");
+	writer.String(meta->raw_format().c_str());
 }
 
 void TextureImporterObject::Read(rapidjson::Value& value)
@@ -230,16 +233,12 @@ const char* AudioImporterObject::ToString()
 AudioImporter::AudioImporter(const String& file, const RESOURCE_FILE_ID& rfid)
 	: ResourceImporter(ImporterType::Audio, rfid, std::filesystem::path(file).extension().string())
 {
-	Analyze(file);
 }
 
 AudioImporter::~AudioImporter()
 {
 }
 
-void AudioImporter::Analyze(const String& path)
-{
-}
 
 void AudioImporter::Write(std::ofstream& ofs) const
 {
@@ -276,16 +275,12 @@ const char* NativeImporterObject::ToString()
 NativeImporter::NativeImporter(const String& file, const RESOURCE_FILE_ID& rfid)
 	: ResourceImporter(ImporterType::Native, rfid, std::filesystem::path(file).extension().string())
 {
-	Analyze(file);
 }
 
 NativeImporter::~NativeImporter()
 {
 }
 
-void NativeImporter::Analyze(const String& path)
-{
-}
 
 void NativeImporter::Write(std::ofstream& ofs) const
 {

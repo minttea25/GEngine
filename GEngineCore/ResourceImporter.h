@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreHeader.h"
+#include "ResourceMeta.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -52,11 +53,6 @@ public:
 	void CreateMetaData(const std::wstring & fullpath) const;
 	void WriteBase(std::ofstream& ofs) const;
 protected:
-	/// <summary>
-	/// Child class should analyze into the resource file at its constructor.
-	/// </summary>
-	/// <param name="path">the resource file path</param>
-	virtual void Analyze(const String& path) = 0;
 	virtual void Write(std::ofstream& ofs) const = 0;
 	virtual void Read(rapidjson::Value& value) = 0;
 protected:
@@ -101,34 +97,33 @@ public:
 	~DefaultImporter();
 
 	// Inherited via ResourceImporter
-	void Analyze(const String& path) override;
 	void Write(std::ofstream& ofs) const override;
 	void Read(rapidjson::Value& value) override;
 public:
 	DefaultImporterObject obj;
 };
 
-struct TextureImporterObject : public ImporterObject
+struct TextureImporterObject final : public ImporterObject
 {
 public:
-	TextureImporterObject() : ImporterObject() {}
-	~TextureImporterObject() {}
+	TextureImporterObject(const String& path, const ITextureMetaLoader* loader);
+	~TextureImporterObject() { if (meta != nullptr) delete meta; }
 
 	// Inherited via ImporterObject
 	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
 	void Read(rapidjson::Value& value) override;
 	const char* ToString() override;
 public:
+	ITextureMeta* meta; // managed here
 };
 
-class TextureImporter final : public ResourceImporter
+class TextureImporter : public ResourceImporter
 {
 public:
-	explicit TextureImporter(const String& file, const RESOURCE_FILE_ID& rfid);
+	explicit TextureImporter(const String& file, const RESOURCE_FILE_ID& rfid, const ITextureMetaLoader* loader);
 	~TextureImporter();
 
 	// Inherited via ResourceImporter
-	void Analyze(const String& path) override;
 	void Write(std::ofstream& ofs) const override;
 	void Read(rapidjson::Value& value) override;
 public:
@@ -155,7 +150,6 @@ public:
 	~AudioImporter();
 
 	// Inherited via ResourceImporter
-	void Analyze(const String& path) override;
 	void Write(std::ofstream& ofs) const override;
 	void Read(rapidjson::Value& value) override;
 public:
@@ -184,7 +178,6 @@ public:
 	NativeImporterObject obj;
 
 	// Inherited via ResourceImporter
-	void Analyze(const String& path) override;
 	void Write(std::ofstream& ofs) const override;
 	void Read(rapidjson::Value& value) override;
 };

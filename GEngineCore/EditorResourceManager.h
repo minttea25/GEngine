@@ -2,6 +2,7 @@
 
 #include "CoreHeader.h"
 #include "ResourceImporter.h"
+#include "ResourceMeta.h"
 
 NAMESPACE_OPEN(GEngine::Editor)
 
@@ -23,7 +24,11 @@ public:
 	G_ENGINE_CORE_API static bool ImportNewResource(const String& path);
 
 private:
-	template<typename Imp> requires std::derived_from<Imp, ResourceImporter>
+
+	template<typename Imp, typename Loader> 
+		requires std::derived_from<Imp, ResourceImporter> 
+		&& std::derived_from<Loader, IMetaLoader>
+		&& requires(const String& path, const RESOURCE_FILE_ID& rfid, const Loader* loader) { Imp(path, rfid, loader); Loader(); }
 	static bool import_new_resource(const String& path, const RESOURCE_FILE_ID& rfid);
 
 	static const String& fullpath(const String& file) { return s_resourceFilePath + L"\\" + file; }
@@ -33,13 +38,37 @@ private:
 	static String s_resourceFilePath;
 };
 
-template<typename Imp> requires std::derived_from<Imp, ResourceImporter>
+template<typename Imp, typename Loader> 
+	requires std::derived_from<Imp, ResourceImporter> 
+	&& std::derived_from<Loader, IMetaLoader>
+	&& requires(const String& path, const RESOURCE_FILE_ID& rfid, const Loader* loader) { Imp(path, rfid, loader); Loader(); }
 inline bool EditorResourceManager::import_new_resource(const String& path, const RESOURCE_FILE_ID& rfid)
 {
-	Imp importer(path, rfid);
-	importer.CreateMetaData(path);
-	return true;
+	return false;
+	//throw std::exception("Undefined Import");
+	/*try
+	{
+		Loader loader{};
+		Imp importer(path, rfid, loader);
+		importer.CreateMetaData(path);
+	}
+	catch () { return false; }
+
+	return true;*/
 }
 
+template<>
+inline bool EditorResourceManager::import_new_resource<TextureImporter, TextureMetaLoaderDefault>(const String& path, const RESOURCE_FILE_ID& rfid)
+{
+	try
+	{
+		TextureMetaLoaderDefault loader;
+		TextureImporter importer(path, rfid, &loader);
+		importer.CreateMetaData(path);
+	}
+	catch (const std::exception& e) { return false; }
+
+	return true;
+}
 
 NAMESPACE_CLOSE

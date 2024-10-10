@@ -9,7 +9,11 @@
 #include "Vector2Int.h"
 #include "Vector2.h"
 #include "GTime.h"
+#include <windows.h>
+#include <gdiplus.h>
+#include <iostream>
 
+#pragma comment (lib,"gdiplus.lib")
 #include "EditorResourceManager.h"
 
 using namespace GEngine::Types;
@@ -17,6 +21,13 @@ using namespace GEngine;
 
 int main()
 {
+    // TODO : MOVE to another class
+    // GDI+ √ ±‚»≠
+    Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+    ULONG_PTR gdiplusToken;
+    Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+
+
     std::cout << "Hello World!\n";
 
     GEngine::Editor::EditorResourceManager::Init();

@@ -79,9 +79,6 @@
     <ClInclude Include="Resources.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceImporter.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -90,6 +87,7 @@
     <ClInclude Include="CoreTypes.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceMeta.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -143,9 +141,6 @@
     <ClCompile Include="MonoBehaviour.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Resource.cpp">
-      <Filter>Resource</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceImporter.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
@@ -153,6 +148,7 @@
       <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="EditorResourceManager.cpp" />
+    <ClCompile Include="ResourceMeta.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Test">

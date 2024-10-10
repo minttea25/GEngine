@@ -26,8 +26,6 @@
 #include <typeindex>
 #include <filesystem>
 
-
-
 #include "CoreMacro.h"
 // https://en.cppreference.com/w/cpp/concepts/derived_from
 	// public inheritance => std::derived_from is true

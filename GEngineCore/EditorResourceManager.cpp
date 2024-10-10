@@ -62,21 +62,21 @@ bool EditorResourceManager::ImportNewResource(const String& path)
 	switch (fType)
 	{
 	case GEngine::FileType::Directory:
-		return import_new_resource<DefaultImporter>(path, rfid);
+		//return import_new_resource<DefaultImporter>(path, rfid);
 	case GEngine::FileType::Texture_PNG:
 	case GEngine::FileType::Texture_BMP:
 	case GEngine::FileType::Texture_JPG:
-		return import_new_resource<TextureImporter>(path, rfid);
+		return import_new_resource<TextureImporter, TextureMetaLoaderDefault>(path, rfid);
 	case GEngine::FileType::Audio_MP3:
 	case GEngine::FileType::Audio_WAV:
 	case GEngine::FileType::Audio_FLAC:
-		return import_new_resource<AudioImporter>(path, rfid);
+		//return import_new_resource<AudioImporter>(path, rfid);
 		break;
 	case GEngine::FileType::GameObject_Prefab:
-		return import_new_resource<NativeImporter>(path, rfid);
+		//return import_new_resource<NativeImporter>(path, rfid);
 		break;
 	case GEngine::FileType::Other:
-		return import_new_resource<DefaultImporter>(path, rfid);
+		//return import_new_resource<DefaultImporter>(path, rfid);
 	case GEngine::FileType::NotExist:
 		return false;
 	default:
