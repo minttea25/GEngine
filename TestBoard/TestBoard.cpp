@@ -13,6 +13,8 @@
 #include <gdiplus.h>
 #include <iostream>
 
+#include "Resources.h"
+
 #pragma comment (lib,"gdiplus.lib")
 #include "EditorResourceManager.h"
 
@@ -27,10 +29,17 @@ int main()
     ULONG_PTR gdiplusToken;
     Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
+    Resources::Init(new Editor::EditorResourceManager());
+
+    auto a = Resources::Load<TextureResource>(L"sample720");
+    auto t = const_cast<Gdiplus::Image*>(a->image());
+    std::cout << t->GetWidth() << std::endl;
+    std::cout << t->GetHeight() << std::endl;
+    
 
     std::cout << "Hello World!\n";
 
-    GEngine::Editor::EditorResourceManager::Init();
+    GEngine::Editor::EditorResourceImporter::Init();
 
     return 0;
 

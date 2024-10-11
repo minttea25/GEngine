@@ -8,9 +8,9 @@ NAMESPACE_OPEN(GEngine::Editor)
 
 using namespace GEngine;
 
-String EditorResourceManager::s_resourceFilePath = L"";
+String EditorResourceImporter::s_resourceFilePath = L"";
 
-void EditorResourceManager::Init(const String& path)
+void EditorResourceImporter::Init(const String& path)
 {
 	s_resourceFilePath = path;
 
@@ -51,7 +51,7 @@ void EditorResourceManager::Init(const String& path)
 }
 
 
-bool EditorResourceManager::ImportNewResource(const String& path)
+bool EditorResourceImporter::ImportNewResource(const String& path)
 {
 	// check extension
 	FileType fType = GetFileType_x(path);
@@ -82,10 +82,47 @@ bool EditorResourceManager::ImportNewResource(const String& path)
 	default:
 		return false;
 	}
+
+	return false;
 }
 
 
-RESOURCE_FILE_ID EditorResourceManager::get_Rfid(const String& path)
+const Object* EditorResourceManager::Load(const String& file)
+{
+	using namespace std::filesystem;
+
+	path meta(DefaultResourcePath + file + ResourceMetaExtension);
+	if (exists(meta) == false)
+	{
+		throw std::exception("No such file: ");
+		return nullptr;
+	}
+
+	ResourceType resType;
+	DISCARD RESOURCE_FILE_ID id;
+	EXTENSION_TYPE ext;
+	if (ResourceImporter::ReadBase(meta, resType, id, ext) == false)
+	{
+		// error
+		throw std::exception("Wrong format about metafile.");
+		return nullptr;
+	}
+
+	auto original = DefaultResourcePath + file + ToWString(ext);
+
+	TextureResource* res = nullptr;
+	if (load_resource<TextureResource, TextureLoaderDefault>(original, res) == false)
+	{
+		// error
+		return nullptr;
+	}
+
+	// CURRENT
+
+	return static_cast<const Object*>(res);
+}
+
+RESOURCE_FILE_ID EditorResourceImporter::get_Rfid(const String& path)
 {
 	// atode path의 트리 구조에 기반하여 생성
 	// TEMP
@@ -99,6 +136,6 @@ RESOURCE_FILE_ID EditorResourceManager::get_Rfid(const String& path)
 
 
 
-
-
 NAMESPACE_CLOSE
+
+

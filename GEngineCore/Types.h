@@ -31,4 +31,14 @@ namespace GEngine
 
 	template<typename T0, typename T1>
 	using Delegate2 = std::function<void(T0, T1)>;
+
+	enum class ResourceType
+	{
+		Texture,
+		Audio,
+		Prefab,
+
+
+		NONE,
+	};
 }

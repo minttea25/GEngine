@@ -36,7 +36,7 @@ public:
 	static constexpr const wchar_t* META_EXTENSION_W = L".meta";
 	static constexpr const char* META_EXTENSION = ".meta";
 public:
-	ResourceImporter(const ImporterType type, const RESOURCE_FILE_ID& rfid, const EXTENSION_TYPE& ext);
+	explicit ResourceImporter(const ImporterType type, const RESOURCE_FILE_ID& rfid, const EXTENSION_TYPE& ext);
 	virtual ~ResourceImporter();
 
 	const unsigned long long importer_version() const;
@@ -52,6 +52,7 @@ public:
 	/// <param name="fullpath">full path of the resource</param>
 	void CreateMetaData(const std::wstring & fullpath) const;
 	void WriteBase(std::ofstream& ofs) const;
+	static bool ReadBase(const String& metapath, OUT ResourceType& resType, OUT RESOURCE_FILE_ID& rfid, OUT EXTENSION_TYPE& ext);
 protected:
 	virtual void Write(std::ofstream& ofs) const = 0;
 	virtual void Read(rapidjson::Value& value) = 0;
@@ -67,11 +68,12 @@ public:
 	{
 		if (importer != nullptr) return false;
 
-		importer = GNEW(Imp);
-		importer->Read(value);
+		// TODO
 
 		return true;
 	}
+
+	static ResourceType GetResourceType(const char* importername);
 
 	static ImporterType GetImporterType(const FileType type);
 };
@@ -133,20 +135,21 @@ public:
 struct AudioImporterObject : public ImporterObject
 {
 public:
-	AudioImporterObject() : ImporterObject() {}
-	~AudioImporterObject() {}
+	AudioImporterObject(const String& path, const IAudioMetaLoader* loader);
+	~AudioImporterObject();
 
 	// Inherited via ImporterObject
 	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
 	void Read(rapidjson::Value& value) override;
 	const char* ToString() override;
 public:
+	IAudioMeta* meta;
 };
 
 class AudioImporter final : public ResourceImporter
 {
 public:
-	explicit AudioImporter(const String& file, const RESOURCE_FILE_ID& rfid);
+	explicit AudioImporter(const String& file, const RESOURCE_FILE_ID& rfid, const IAudioMetaLoader* loader);
 	~AudioImporter();
 
 	// Inherited via ResourceImporter

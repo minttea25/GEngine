@@ -82,12 +82,18 @@
     <ClInclude Include="ResourceImporter.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="EditorResourceManager.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="CoreTypes.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceMeta.h" />
+    <ClInclude Include="EditorResourceManager.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMeta.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceLoader.h" />
+    <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -147,8 +153,14 @@
     <ClCompile Include="Resources.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
-    <ClCompile Include="EditorResourceManager.cpp" />
-    <ClCompile Include="ResourceMeta.cpp" />
+    <ClCompile Include="EditorResourceManager.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMeta.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceLoader.cpp" />
+    <ClCompile Include="Resource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Test">

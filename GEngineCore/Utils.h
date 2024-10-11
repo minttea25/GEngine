@@ -5,6 +5,8 @@
 #include <minwindef.h>
 #include <filesystem>
 #include <fileapi.h>
+#include <codecvt>
+#include <Windows.h>
 
 NAMESPACE_OPEN(GEngine)
 
@@ -18,6 +20,13 @@ bool IsExtension(const std::wstring& path, const std::wstring& ext)
     {
         return false;
     }
+}
+
+std::wstring ToWString(const std::string& str)
+{
+    std::wstring s;
+    s.assign(str.begin(), str.end());
+    return s;
 }
 
 FileType GetFileType_x(const std::wstring& path)

@@ -92,4 +92,23 @@ IDefaultMeta* DefaultMetaLoader::Load(const String& path) const
 }
 
 
+IAudioMeta* AudioMetaLoaderDefault::Load(const String& path) const
+{
+	/*else
+	{
+		std::wstring s(L"Can not find or open file as Audio: " + path);
+		std::string e;
+		e.assign(s.begin(), s.end());
+		throw std::runtime_error(e);
+		return nullptr;
+	}
+	return nullptr;*/
+	return nullptr;
+}
+
+
+
+void AudioMeta::info(std::ostream& os)
+{
+}
 NAMESPACE_CLOSE

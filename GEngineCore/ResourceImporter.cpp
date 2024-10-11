@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "ResourceImporter.h"
+#include <fstream>
 
 #include "rapidjson/prettywriter.h"
-#include <fstream>
+
 
 NAMESPACE_OPEN(GEngine)
 
@@ -57,6 +58,27 @@ void ResourceImporter::SetData(const RESOURCE_FILE_ID& rfid, const EXTENSION_TYP
 	_obj->extension = ext;
 }
 
+
+
+ResourceType ResourceImporter::GetResourceType(const char* importername)
+{
+	if (strcmp(importername, "DefaultImporter") == 0)
+	{
+		return ResourceType::NONE;
+	}
+	else if (strcmp(importername, "TextureImporter") == 0)
+	{
+		return ResourceType::Texture;
+	}
+	else if (strcmp(importername, "AudioImporter") == 0)
+	{
+		return ResourceType::Audio;
+	}
+
+	// TODO : add more here;
+	return ResourceType();
+}
+
 ImporterType ResourceImporter::GetImporterType(const FileType type)
 {
 	switch (type)
@@ -101,6 +123,46 @@ void ResourceImporter::WriteBase(std::ofstream& ofs) const
 	ofs << "ImporterVersion: " << _obj->importer_version
 		<< "\nResourceFileId: " << _obj->rfid
 		<< "\nExtension: " << _obj->extension;
+}
+
+bool ResourceImporter::ReadBase(const String& metapath, OUT ResourceType& resType, OUT RESOURCE_FILE_ID& rfid, OUT EXTENSION_TYPE& ext)
+{
+	std::ifstream ifs(metapath);
+	std::string line;
+
+	if (ifs.is_open())
+	{
+		// version
+		std::getline(ifs, line);
+
+		// rfid
+		std::getline(ifs, line);
+		if (auto i = line.rfind(':', line.size() - 1))
+		{
+			rfid = line.substr(i + 2);
+		}
+
+		// extension
+		std::getline(ifs, line);
+		if (auto i = line.rfind(':', line.size() - 1))
+		{
+			ext = line.substr(i + 2);
+		}
+
+		// importer
+		std::getline(ifs, line);
+		if (auto i = line.rfind(':', line.size() - 1))
+		{
+			auto importer = line.substr(0, i);
+			resType = GetResourceType(importer.c_str());
+		}
+
+		ifs.close();
+
+		return true;
+	}
+
+	return false;
 }
 
 DefaultImporterObject::DefaultImporterObject(const String& path, const IDefaultMetaLoader* loader)
@@ -223,6 +285,16 @@ const char* TextureImporterObject::ToString()
 	return nullptr;
 }
 
+AudioImporterObject::AudioImporterObject(const String& path, const IAudioMetaLoader* loader)
+	: ImporterObject(), meta(loader->Load(path))
+{
+}
+
+AudioImporterObject::~AudioImporterObject()
+{
+	if (meta != nullptr) delete meta;
+}
+
 void AudioImporterObject::Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const
 {
 
@@ -237,8 +309,8 @@ const char* AudioImporterObject::ToString()
 	return nullptr;
 }
 
-AudioImporter::AudioImporter(const String& file, const RESOURCE_FILE_ID& rfid)
-	: ResourceImporter(ImporterType::Audio, rfid, std::filesystem::path(file).extension().string())
+AudioImporter::AudioImporter(const String& file, const RESOURCE_FILE_ID& rfid, const IAudioMetaLoader* loader)
+	: ResourceImporter(ImporterType::Audio, rfid, std::filesystem::path(file).extension().string()), obj(file, loader)
 {
 }
 

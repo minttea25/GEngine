@@ -7,6 +7,7 @@
 #include "Windows.h"
 #include "gdiplus.h"
 
+
 NAMESPACE_OPEN(GEngine)
 
 __interface IResourceMeta
@@ -104,6 +105,13 @@ __interface IAudioMeta : IResourceMeta
 #endif // _DEBUG
 };
 
+struct AudioMeta : IAudioMeta
+{
+#ifdef _DEBUG
+	void info(std::ostream& os) override;
+#endif // _DEBUG
+};
+
 
 
 
@@ -133,5 +141,15 @@ struct TextureMetaLoaderDefault : public ITextureMetaLoader
 	// Inherited via ITextureMetaLoader
 	ITextureMeta* Load(const String& path) const override;
 };
+
+__interface IAudioMetaLoader : public IMetaLoader
+{
+	IAudioMeta* Load(const String& path) const;
+};
+
+struct AudioMetaLoaderDefault : public IAudioMetaLoader
+{
+	IAudioMeta* Load(const String& path) const override;
+};;
 
 NAMESPACE_CLOSE
