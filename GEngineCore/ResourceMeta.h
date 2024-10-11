@@ -14,6 +14,31 @@ __interface IResourceMeta
 
 };
 
+__interface IDefaultMeta : IResourceMeta
+{
+	bool is_folder() const;
+#ifdef _DEBUG
+	void info(std::ostream& os);
+#endif // _DEBUG
+
+};
+
+struct DefaultMeta : IDefaultMeta
+{
+	DefaultMeta(bool m_isFolder)
+		: m_isFolder(m_isFolder)
+	{
+	}
+	~DefaultMeta() {}
+	const bool m_isFolder;
+
+
+	bool is_folder() const override { return m_isFolder; }
+#ifdef _DEBUG
+	void info(std::ostream& os) override;
+#endif // _DEBUG	
+};
+
 __interface ITextureMeta : IResourceMeta
 {
 	uint32_t width() const;
@@ -69,9 +94,33 @@ public:
 	
 };
 
+
+__interface IAudioMeta : IResourceMeta
+{
+
+
+#ifdef _DEBUG
+	void info(std::ostream& os);
+#endif // _DEBUG
+};
+
+
+
+
 __interface IMetaLoader
 {
 
+};
+
+__interface IDefaultMetaLoader : public IMetaLoader
+{
+	IDefaultMeta* Load(const String& path) const;
+};
+
+struct DefaultMetaLoader : public IDefaultMetaLoader
+{
+	// Inherited via IDefaultMetaLoader
+	IDefaultMeta* Load(const String& path) const override;
 };
 
 __interface ITextureMetaLoader : public IMetaLoader

@@ -79,21 +79,21 @@ public:
 struct DefaultImporterObject final : public ImporterObject
 {
 public:
-	DefaultImporterObject() : ImporterObject(), is_folder(false) {}
-	~DefaultImporterObject() {}
+	DefaultImporterObject(const String& path, const IDefaultMetaLoader* loader);
+	~DefaultImporterObject();
 
 	// Inherited via ImporterObject
 	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;
 	void Read(rapidjson::Value& value) override;
 	const char* ToString() override;
 public:
-	bool is_folder;
+	IDefaultMeta* meta;
 };
 
 class DefaultImporter final : public ResourceImporter
 {
 public:
-	explicit DefaultImporter(const String& file, const RESOURCE_FILE_ID& rfid);
+	explicit DefaultImporter(const String& file, const RESOURCE_FILE_ID& rfid, const IDefaultMetaLoader* loader);
 	~DefaultImporter();
 
 	// Inherited via ResourceImporter
@@ -107,7 +107,7 @@ struct TextureImporterObject final : public ImporterObject
 {
 public:
 	TextureImporterObject(const String& path, const ITextureMetaLoader* loader);
-	~TextureImporterObject() { if (meta != nullptr) delete meta; }
+	~TextureImporterObject();
 
 	// Inherited via ImporterObject
 	void Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const override;

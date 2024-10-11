@@ -103,18 +103,24 @@ void ResourceImporter::WriteBase(std::ofstream& ofs) const
 		<< "\nExtension: " << _obj->extension;
 }
 
+DefaultImporterObject::DefaultImporterObject(const String& path, const IDefaultMetaLoader* loader)
+	: ImporterObject(), meta(loader->Load(path))
+{
+}
+
+DefaultImporterObject::~DefaultImporterObject()
+{
+	if (meta != nullptr) delete meta;
+}
+
 void DefaultImporterObject::Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const
 {
-	writer.Key("is_folder");
-	writer.Bool(is_folder);
+	writer.Key("m_isFolder");
+	writer.Bool(meta->is_folder());
 }
 
 void DefaultImporterObject::Read(rapidjson::Value& value)
 {
-	if (value.HasMember("is_folder") && value["is_folder"].IsBool())
-	{
-		is_folder = value["is_folder"].GetBool();
-	}
 }
 
 const char* DefaultImporterObject::ToString()
@@ -130,14 +136,10 @@ const char* DefaultImporterObject::ToString()
 }
 
 
-DefaultImporter::DefaultImporter(const String& file, const RESOURCE_FILE_ID& rfid)
-	: ResourceImporter(ImporterType::Default, rfid, std::filesystem::path(file).string())
+DefaultImporter::DefaultImporter(const String& file, const RESOURCE_FILE_ID& rfid, const IDefaultMetaLoader* loader)
+	: ResourceImporter(ImporterType::Default, rfid, std::filesystem::path(file).string()), obj(file, loader)
 {
-	DWORD attr = GetFileAttributesW(file.c_str());
-	if (attr & FILE_ATTRIBUTE_DIRECTORY)
-	{
-		obj.is_folder = true;
-	}
+	
 }
 
 DefaultImporter::~DefaultImporter()
@@ -193,6 +195,11 @@ void TextureImporter::Read(rapidjson::Value& value)
 TextureImporterObject::TextureImporterObject(const String& path, const ITextureMetaLoader* loader)
 	: ImporterObject(), meta(loader->Load(path))
 {
+}
+
+TextureImporterObject::~TextureImporterObject()
+{
+	if (meta != nullptr) delete meta;
 }
 
 void TextureImporterObject::Write(rapidjson::Writer<rapidjson::StringBuffer>& writer) const

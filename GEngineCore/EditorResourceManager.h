@@ -71,4 +71,20 @@ inline bool EditorResourceManager::import_new_resource<TextureImporter, TextureM
 	return true;
 }
 
+
+template<>
+inline bool EditorResourceManager::import_new_resource<DefaultImporter, DefaultMetaLoader>(const String& path, const RESOURCE_FILE_ID& rfid)
+{
+	try
+	{
+		DefaultMetaLoader loader;
+		DefaultImporter importer(path, rfid, &loader);
+		importer.CreateMetaData(path);
+	}
+	catch (const std::exception& e) { return false; }
+
+	return true;
+}
+
+
 NAMESPACE_CLOSE

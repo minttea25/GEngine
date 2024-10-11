@@ -62,7 +62,7 @@ bool EditorResourceManager::ImportNewResource(const String& path)
 	switch (fType)
 	{
 	case GEngine::FileType::Directory:
-		//return import_new_resource<DefaultImporter>(path, rfid);
+		return import_new_resource<DefaultImporter, DefaultMetaLoader>(path, rfid);
 	case GEngine::FileType::Texture_PNG:
 	case GEngine::FileType::Texture_BMP:
 	case GEngine::FileType::Texture_JPG:

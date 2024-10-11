@@ -69,6 +69,27 @@ ITextureMeta* TextureMetaLoaderDefault::Load(const String& path) const
 	
 	delete image;
 
-	return static_cast<ITextureMeta*>(meta); // TODO return local var.
+	return meta;
 }
+
+#ifdef _DEBUG
+void DefaultMeta::info(std::ostream& os)
+{
+	os << "m_isFolder: " << m_isFolder;
+}
+#endif // _DEBUG
+
+IDefaultMeta* DefaultMetaLoader::Load(const String& path) const
+{
+	DWORD attr = GetFileAttributesW(path.c_str());
+	bool isFolder = false;
+	if (attr & FILE_ATTRIBUTE_DIRECTORY)
+	{
+		isFolder = true;
+	}
+	DefaultMeta* meta = new DefaultMeta(isFolder);
+	return meta;
+}
+
+
 NAMESPACE_CLOSE
