@@ -3,8 +3,20 @@
 // This header represents essential headers for other core classes.
 
 #include "CoreMacro.h"
-#include "concepts.h"
 #include "Types.h"
+#include "CoreTypes.h"
+
+
+#include <Windows.h>
+#include <mmsystem.h>
+#include <dinput.h>
+#pragma comment(lib, "Msimg32.lib")
+#pragma comment(lib, "winmm.lib")
+
+#include <gdiplus.h>
+#pragma comment(lib, "gdiplus.lib")
+
+
 
 #include "Color.h"
 #include "Vector2.h"

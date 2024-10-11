@@ -12,6 +12,12 @@ namespace GEngine
 	// warning C4251
 	// STL container needs to have dll-interface to be used by clients of class ~
 
+	// Resource Unique ID
+	using RUID = unsigned long long;
+	using RESOURCE_FILE_ID = std::string;
+	using EXTENSION_TYPE = std::string;
+	using OBJECT_FILE_ID = unsigned long long;
+
 	using String = std::wstring;
 
 	template<typename _Kty, typename _Ty>
@@ -20,10 +26,19 @@ namespace GEngine
 	template<typename _Ty>
 	using Vector = std::vector<_Ty>;
 
-
 	template<typename T>
 	using Delegate = std::function<void(T)>;
 
 	template<typename T0, typename T1>
 	using Delegate2 = std::function<void(T0, T1)>;
+
+	enum class ResourceType
+	{
+		Texture,
+		Audio,
+		Prefab,
+
+
+		NONE,
+	};
 }

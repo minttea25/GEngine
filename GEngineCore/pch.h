@@ -24,12 +24,14 @@
 #include <set>
 #include <unordered_set>
 #include <typeindex>
-
-
+#include <filesystem>
 
 #include "CoreMacro.h"
-#include "concepts.h"
+// https://en.cppreference.com/w/cpp/concepts/derived_from
+	// public inheritance => std::derived_from is true
+	// private inheritance => std::derived_from is false
 #include "Types.h"
+#include "CoreTypes.h"
 
 
 /*********** Types ****************/
