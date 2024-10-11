@@ -58,4 +58,11 @@ Gdiplus::Image* TextureLoaderDefault::Load(const String& path) const
     return nullptr;
 }
 
+int* DefaultLoader::Load(const String& path) const
+{
+    return nullptr;
+}
+
 NAMESPACE_CLOSE
+
+

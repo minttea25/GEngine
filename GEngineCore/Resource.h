@@ -22,6 +22,15 @@ protected:
 	Vector<unsigned char>* _rawData;
 };
 
+class DefaultResource final : public Resource
+{
+public:
+	explicit DefaultResource(const String& path, const IDefaultLoader* loader);
+	~DefaultResource();
+
+private:
+};
+
 class TextureResource final : public Resource
 {
 public:

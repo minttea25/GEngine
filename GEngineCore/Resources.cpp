@@ -35,12 +35,21 @@ void Resources::_init_instance()
 	_instance = new Resources();
 }
 
-const TextureResource * Resources::_load(const String & path)
+const TextureResource * Resources::_load_texture(const String & path)
 {
 	if (_instance->_manager == nullptr) return nullptr;
 
 	const auto obj = _instance->_manager->Load(path);
 	return static_cast<const TextureResource*>(obj);
+}
+
+G_ENGINE_CORE_API const DefaultResource* Resources::_load_default(const String& path)
+{
+
+	if (_instance->_manager == nullptr) return nullptr;
+
+	const auto obj = _instance->_manager->Load(path);
+	return static_cast<const DefaultResource*>(obj);
 }
 
 

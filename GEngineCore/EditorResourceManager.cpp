@@ -110,16 +110,40 @@ const Object* EditorResourceManager::Load(const String& file)
 
 	auto original = DefaultResourcePath + file + ToWString(ext);
 
-	TextureResource* res = nullptr;
-	if (load_resource<TextureResource, TextureLoaderDefault>(original, res) == false)
+	switch (resType)
 	{
-		// error
-		return nullptr;
+	case GEngine::ResourceType::Texture:
+	{
+		TextureResource* res = nullptr;
+		if (load_resource<TextureResource, TextureLoaderDefault>(original, res) == false)
+		{
+			// error
+			return nullptr;
+		}
+		return static_cast<const Object*>(res);
+	}
+		break;
+	case GEngine::ResourceType::Audio:
+		break;
+	case GEngine::ResourceType::Prefab:
+		break;
+	case GEngine::ResourceType::NONE:
+	{
+		DefaultResource* res = nullptr;
+		if (load_resource<DefaultResource, DefaultLoader>(original, res) == false)
+		{
+			// error
+			return nullptr;
+		}
+		return static_cast<const Object*>(res);
+	}
+		break;
+	default:
+		break;
 	}
 
-	// CURRENT
 
-	return static_cast<const Object*>(res);
+	return nullptr;
 }
 
 RESOURCE_FILE_ID EditorResourceImporter::get_Rfid(const String& path)

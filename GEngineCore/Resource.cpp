@@ -16,6 +16,15 @@ Resource::~Resource()
 }
 
 
+DefaultResource::DefaultResource(const String& path, const IDefaultLoader* loader)
+	: Resource(ResourceType::NONE)
+{
+}
+
+DefaultResource::~DefaultResource()
+{
+}
+
 
 TextureResource::TextureResource(const String& path, const ITextureLoader* loader)
 	: Resource(ResourceType::Texture), _image(loader->Load(path))
@@ -35,13 +44,6 @@ TextureResource::~TextureResource()
 
 
 
-
-
-
-
-
-
-
-
-
 NAMESPACE_CLOSE
+
+

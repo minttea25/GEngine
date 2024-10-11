@@ -36,8 +36,6 @@ template<typename Res, typename Loader>
 && std::derived_from<Loader, IResourceLoader>
 inline bool EditorResourceManager::load_resource(const String & file, OUT Res*& res)
 {
-
-
 	return false;
 }
 
@@ -48,6 +46,18 @@ inline bool EditorResourceManager::load_resource<TextureResource, TextureLoaderD
 	{
 		TextureLoaderDefault loader;
 		res = new TextureResource(file, &loader);
+		return true;
+	}
+	catch (std::exception& e) { return false; }
+}
+
+template<>
+inline bool EditorResourceManager::load_resource<DefaultResource, DefaultLoader>(const String& file, OUT DefaultResource*& res)
+{
+	try
+	{
+		DefaultLoader loader;
+		res = new DefaultResource(file, &loader);
 		return true;
 	}
 	catch (std::exception& e) { return false; }

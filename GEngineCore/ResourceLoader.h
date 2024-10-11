@@ -10,10 +10,18 @@ __interface IResourceLoader
 
 };
 
-struct ResourceLoader
+__interface IDefaultLoader : public IResourceLoader
 {
-	static constexpr auto ResourceMetaExtension = L".meta";
+	// TEMP: always return nullptr
+	int* Load(const String& path) const;
 };
+
+struct DefaultLoader : public IDefaultLoader
+{
+	// Inherited via IDefaultLoader
+	int* Load(const String& path) const override;
+};
+
 
 __interface ITextureLoader : public IResourceLoader
 {

@@ -29,12 +29,16 @@ int main()
     ULONG_PTR gdiplusToken;
     Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
+    Editor::EditorResourceImporter::Init();
+
     Resources::Init(new Editor::EditorResourceManager());
 
     auto a = Resources::Load<TextureResource>(L"sample720");
     auto t = const_cast<Gdiplus::Image*>(a->image());
     std::cout << t->GetWidth() << std::endl;
     std::cout << t->GetHeight() << std::endl;
+
+    auto b = Resources::Load<DefaultResource>(L"folder");
     
 
     std::cout << "Hello World!\n";

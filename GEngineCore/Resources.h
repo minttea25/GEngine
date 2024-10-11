@@ -21,7 +21,8 @@ public:
 	template<typename Res> requires std::derived_from<Res, Resource>
 	static const Res* Load(const String& path);
 private:
-	G_ENGINE_CORE_API const TextureResource* _load(const String& path);
+	G_ENGINE_CORE_API const TextureResource* _load_texture(const String& path);
+	G_ENGINE_CORE_API const DefaultResource* _load_default(const String& path);
 
 private:
 	Resources();
@@ -47,9 +48,16 @@ inline const Res* Resources::Load(const String& path)
 }
 
 template<>
+inline const DefaultResource* Resources::Load(const String& path)
+{
+	return Resources::_instance->_load_default(path);
+}
+
+
+template<>
 inline const TextureResource* Resources::Load(const String& path)
 {
-	return Resources::_instance->_load(path);
+	return Resources::_instance->_load_texture(path);
 }
 
 
